@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <rotate android:fromDegrees="270" android:toDegrees="270">
+            <shape
+                android:innerRadiusRatio="7"
+                android:shape="ring"
+                android:thickness="7dp"
+                android:useLevel="false">
+                <solid android:color="@color/violet" />
+
+            </shape>
+        </rotate>
+    </item>
+    <item android:bottom="100dp"
+        android:left="100dp">
+        <rotate android:fromDegrees="180" android:toDegrees="180">
+            <shape
+                android:innerRadiusRatio="20"
+                android:shape="ring"
+                android:thickness="4dp"
+                android:useLevel="false">
+                <solid android:color="@color/yellow_green" />
+            </shape>
+        </rotate>
+    </item>
+    <item android:top="50dp"
+        android:right="330dp">
+        <rotate android:fromDegrees="180" android:toDegrees="180">
+            <shape
+                android:innerRadiusRatio="20"
+                android:shape="ring"
+                android:thickness="2dp"
+                android:useLevel="false">
+                <solid android:color="@color/shadow_green" />
+            </shape>
+        </rotate>
+    </item>
+    <item android:bottom="300dp"
+    android:right="50dp">
+    <rotate android:fromDegrees="180" android:toDegrees="180">
+        <shape
+            android:innerRadiusRatio="50"
+            android:shape="ring"
+            android:thickness="2dp"
+            android:useLevel="false">
+            <solid android:color="@color/shadow_green" />
+        </shape>
+    </rotate>
+</item>
+    <item android:top="250dp"
+        android:right="50dp">
+        <rotate android:fromDegrees="180" android:toDegrees="180">
+            <shape
+                android:innerRadiusRatio="20"
+                android:shape="ring"
+                android:thickness="2dp"
+                android:useLevel="false">
+                <solid android:color="@color/shadow_green" />
+            </shape>
+        </rotate>
+    </item>
+    <item android:top="50dp"
+        android:right="330dp">
+        <rotate android:fromDegrees="180" android:toDegrees="180">
+            <shape
+                android:innerRadiusRatio="20"
+                android:shape="ring"
+                android:thickness="2dp"
+                android:useLevel="false">
+                <solid android:color="@color/shadow_green" />
+            </shape>
+        </rotate>
+    </item>
+    <item >
+        <shape
+            android:innerRadiusRatio="5"
+            android:shape="ring"
+            android:thickness="4dp"
+            android:useLevel="false">
+            <solid android:color="@color/shadow_green" />
+        </shape>
+    </item>
+    <item android:top="140dp"
+        android:left="305dp">
+        <rotate android:fromDegrees="270" android:toDegrees="270">
+            <shape
+                android:innerRadiusRatio="13"
+                android:shape="ring"
+                android:thickness="2dp"
+                android:useLevel="false">
+                <solid android:color="@color/blue_green" />
+            </shape>
+        </rotate>
+    </item>
+    <item>
+        <rotate>
+            <inset >
+                <shape
+                    android:innerRadiusRatio="3"
+                    android:shape="ring"
+                    android:thickness="2dp"
+                    android:useLevel="false">
+                    <solid android:color="@color/light_green" />
+                </shape>
+            </inset>
+        </rotate>
+    </item>
+</layer-list>
