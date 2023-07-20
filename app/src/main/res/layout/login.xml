@@ -118,7 +118,7 @@
                             android:textColor="#5800FF"
                             android:textSize="18dp"
                             android:gravity="center"
-                            android:text="Forgotten password?" />
+                            android:text="Forgot password?" />
 
                     </LinearLayout>
                 </FrameLayout>
