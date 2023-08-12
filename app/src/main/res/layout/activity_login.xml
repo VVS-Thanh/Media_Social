@@ -96,7 +96,7 @@
                             android:paddingLeft="10dp" />
 
                         <Button
-                            android:id="@+id/signUp"
+                            android:id="@+id/logIn"
                             android:layout_width="321dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
