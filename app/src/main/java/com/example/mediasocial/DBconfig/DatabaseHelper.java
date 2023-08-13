@@ -31,11 +31,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String TABLE_NAME = "roles";
     private SQLiteDatabase mDefaultWritableDatabase;
     //Khai báo biến context
-    private final Context mContext;
+//    private final Context mContext;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        this.mContext = context;
+//        this.mContext = context;
 //        this.databasePath = context.getDatabasePath(DB_NAME).getPath();
     }
 
@@ -84,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "updated_at DATETIME DEFAULT NULL,"
                 + "deleted_at DATETIME DEFAULT NULL,"
                 + "user_id integer not null,"
-                + "FOREIGN KEY (user_id) REFERENCES users (id))";
+                + "FOREIGN KEY (user_id) REFERENCES users (user_id))";
         sqLiteDatabase.execSQL(sql1);
         //Khai bao bang comments
         String sql2 = "CREATE TABLE comments ("
@@ -101,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "id integer PRIMARY KEY NOT NULL,"
                 + "post_id integer not null,"
                 + "user_id integer not null,"
-                + "FOREIGN KEY (user_id) REFERENCES users (id),"
+                + "FOREIGN KEY (user_id) REFERENCES users (user_id),"
                 + "FOREIGN KEY (post_id) REFERENCES posts (post_id))";
         sqLiteDatabase.execSQL(sql3);
 
@@ -111,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "user_id integer not null," +
                 "created_time DATETIME," +
                 "updated_time DATETIME,"
-                + "FOREIGN KEY (user_id) REFERENCES users (id),"
+                + "FOREIGN KEY (user_id) REFERENCES users (user_id),"
                 + "FOREIGN KEY (post_id) REFERENCES posts (post_id))";
         sqLiteDatabase.execSQL(sql4);
 
@@ -119,7 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "id integer PRIMARY KEY NOT NULL,"
                 + "post_id integer not null,"
                 + "user_id integer not null,"
-                + "FOREIGN KEY (user_id) REFERENCES users (id),"
+                + "FOREIGN KEY (user_id) REFERENCES users (user_id),"
                 + "FOREIGN KEY (post_id) REFERENCES posts (post_id))";
         sqLiteDatabase.execSQL(sql5);
 
@@ -135,7 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "updated_at DATETIME DEFAULT NULL," +
                 "deleted_at DATETIME DEFAULT NULL," +
                 "user_id integer NOT NULL," +
-                "FOREIGN KEY (user_id) REFERENCES users ( id))";
+                "FOREIGN KEY (user_id) REFERENCES users (user_id))";
         sqLiteDatabase.execSQL(sql6);
 
         sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON;");

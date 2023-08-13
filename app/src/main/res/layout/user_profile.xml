@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
              android:layout_height="match_parent">
 
+
     <RelativeLayout
         android:id="@+id/relLayout1"
         android:layout_width="match_parent"
@@ -20,6 +21,11 @@
             android:paddingTop="8dp"
             android:paddingEnd="16dp"
             android:paddingBottom="8dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:id="@+id/tvName"
@@ -45,6 +51,7 @@
                 android:src="@drawable/ic_menu" />
 
         </LinearLayout>
+
 
 
     </RelativeLayout>
@@ -230,30 +237,41 @@
             android:layout_marginTop="17dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
-
             <Button
-                android:id="@+id/followBtn1"
+                android:id="@+id/BtnEditPfrofile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:background="@drawable/button_follow"
                 android:minWidth="160dp"
-                android:text="Kết bạn"
+                android:text="Chỉnh sửa thông tin trang cá nhân"
                 android:textColor="@android:color/white"
                 app:backgroundTint="@null"
                 />
 
-            <Button
-                android:id="@+id/followBtn2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:background="@drawable/button_follow"
-                android:minWidth="160dp"
-                android:text="Theo dõi"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@null"
-                />
+<!--            <Button-->
+<!--                android:id="@+id/followBtn1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:background="@drawable/button_follow"-->
+<!--                android:minWidth="160dp"-->
+<!--                android:text="Kết bạn"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                app:backgroundTint="@null"-->
+<!--                />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/followBtn2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:background="@drawable/button_follow"-->
+<!--                android:minWidth="160dp"-->
+<!--                android:text="Theo dõi"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                app:backgroundTint="@null"-->
+<!--                />-->
 
         </LinearLayout>
 
@@ -278,7 +296,6 @@
             android:verticalSpacing="1dp">
 
         </GridView>
-
 
     </RelativeLayout>
 
