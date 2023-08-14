@@ -134,13 +134,6 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public Date getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Date deletedAt) {
-        this.deletedAt = deletedAt;
-    }
 
     public int getRoleId() {
         return roleId;

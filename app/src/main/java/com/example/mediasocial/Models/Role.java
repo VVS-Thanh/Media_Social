@@ -1,5 +1,12 @@
 package com.example.mediasocial.Models;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
+
+import com.example.mediasocial.DBconfig.DatabaseHelper;
+
 import java.util.Date;
 
 public class Role {
@@ -40,6 +47,36 @@ public class Role {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    private static String getCurrentDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Date currentDate = new Date();
+        return dateFormat.format(currentDate);
+    }
+
+
+    public static void insertRolesData(Context context) {
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Chèn dữ liệu role admin
+        values.put("role_id", 1);
+        values.put("role_name", "admin");
+        values.put("created_at", getCurrentDateTime());
+        db.insert("roles", null, values);
+
+        //Chèn dữ liệu role user
+        values.clear();
+        values.put("role_id", 2);
+        values.put("role_name", "user");
+        values.put("created_at", getCurrentDateTime());
+        db.insert("roles", null, values);
+
+        // Đóng kết nối với cơ sở dữ liệu sau khi chèn dữ liệu
+        db.close();
     }
 
 }

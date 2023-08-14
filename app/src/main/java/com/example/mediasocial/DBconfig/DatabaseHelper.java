@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.text.SimpleDateFormat;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     //Khai bao tag
@@ -190,6 +192,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return checkDB != null;
     }
+
+
+
+    //Xử lý insert Data
+
+
+
 
     // Copy the database from assets
 //    public void copyDataBase () {

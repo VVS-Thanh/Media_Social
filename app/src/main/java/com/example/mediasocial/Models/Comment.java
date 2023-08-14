@@ -74,4 +74,13 @@ public class Comment {
     public void setPostId(int postId) {
         this.postId = postId;
     }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "comment='" + content + '\'' +
+                ", post_id='" + postId + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                '}';
+    }
 }
