@@ -34,6 +34,7 @@ public class User {
         this.userPosts = new ArrayList<>();
     }
 
+
     public List<Post> getUserPosts() {
         return userPosts;
     }

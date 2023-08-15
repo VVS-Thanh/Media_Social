@@ -1,5 +1,7 @@
 package com.example.mediasocial.DBconfig;
 
+import static com.example.mediasocial.Models.Role.getCurrentDateTime;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -197,7 +199,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Xử lý insert Data
 
+    public Boolean insertUser(String email, String phone, String name, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("email", email);
+        values.put("phone", phone);
+        values.put("name", name);
+        values.put("password", password);
+        values.put("role_id", 2);
+        String currentTime = getCurrentDateTime();
+        values.put("created_at", currentTime);
 
+        long userId = db.insert("users", null, values);
+        db.close();
+        if (userId == -1)
+            return false;
+        else {
+            return true;
+        }
+    }
+    public boolean isEmailRegistered(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("users", null, "email=?", new String[]{email}, null, null, null);
+        boolean emailExists = cursor.moveToFirst();
+        cursor.close();
+        return emailExists;
+    }
+
+    public boolean isUsernameTaken(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("users", null, "name=?", new String[]{username}, null, null, null);
+        boolean usernameExists = cursor.moveToFirst();
+        cursor.close();
+        return usernameExists;
+    }
 
 
     // Copy the database from assets

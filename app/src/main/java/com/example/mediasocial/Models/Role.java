@@ -49,7 +49,7 @@ public class Role {
         this.createdAt = createdAt;
     }
 
-    private static String getCurrentDateTime() {
+    public static String getCurrentDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Date currentDate = new Date();
         return dateFormat.format(currentDate);
