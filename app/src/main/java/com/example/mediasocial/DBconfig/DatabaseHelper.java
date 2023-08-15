@@ -2,6 +2,7 @@ package com.example.mediasocial.DBconfig;
 
 import static com.example.mediasocial.Models.Role.getCurrentDateTime;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -199,6 +200,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Xử lý insert Data
+    public boolean checkLogin(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"user_id", "password"};
+        String selection = "email = ?";
+        String[] selectionArgs = {email};
+
+        // Thực hiện truy vấn
+        Cursor cursor = db.query("users", columns, selection, selectionArgs, null, null, null);
+        boolean loggedIn = false;
+
+        if (cursor.moveToFirst()) {
+            @SuppressLint("Range") String hashedPassword = cursor.getString(cursor.getColumnIndex("password"));
+            if (BCrypt.checkpw(password, hashedPassword)) {
+                loggedIn = true;
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return loggedIn;
+    }
+
+    // Hàm băm mật khẩu
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
@@ -206,8 +230,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("email", email);
-        values.put("phone", phone);
         values.put("name", name);
+        values.put("phone", phone);
         String hashedPassword = hashPassword(password);
         values.put("password", hashedPassword);
         values.put("role_id", 2);
@@ -239,9 +263,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
-
-    // Copy the database from assets
+        // Copy the database from assets
 //    public void copyDataBase () {
 //        try {
 //            InputStream inputStream = mContext.getAssets().open(DB_NAME);

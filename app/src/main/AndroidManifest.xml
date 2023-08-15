@@ -39,7 +39,7 @@
         </activity>
         <activity
             android:name=".HomePageActivity"
-            android:label="HomePage"
+            android:label="Home Page"
             android:parentActivityName=".LogInActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
