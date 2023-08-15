@@ -13,6 +13,7 @@ import android.icu.text.SimpleDateFormat;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
+import org.mindrot.jbcrypt.BCrypt;
 
 import androidx.annotation.Nullable;
 
@@ -198,14 +199,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Xử lý insert Data
-
-    public Boolean insertUser(String email, String phone, String name, String password) {
+    public String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+    public Boolean insertUser(String email, String name, String phone, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("email", email);
         values.put("phone", phone);
         values.put("name", name);
-        values.put("password", password);
+        String hashedPassword = hashPassword(password);
+        values.put("password", hashedPassword);
         values.put("role_id", 2);
         String currentTime = getCurrentDateTime();
         values.put("created_at", currentTime);
@@ -233,6 +237,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return usernameExists;
     }
+
+
 
 
     // Copy the database from assets

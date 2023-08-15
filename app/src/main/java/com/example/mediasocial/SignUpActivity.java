@@ -66,10 +66,10 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void createUser(String email, String username, String password, String phone) {
+    private void createUser(String email, String username , String phone, String password) {
         String currentDateTime = getCurrentDateTime();
 
-        boolean checkUser = db.insertUser(email, phone, username, password);
+        boolean checkUser = db.insertUser(email,username, phone, password);
 
         if (checkUser) {
             Toast.makeText(SignUpActivity.this, "Thêm người dùng thành công!", Toast.LENGTH_SHORT).show();
