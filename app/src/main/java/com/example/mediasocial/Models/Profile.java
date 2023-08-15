@@ -30,12 +30,17 @@ public class Profile {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
-        this.userId = userId;
+        this.userId = this.userId;
     }
 
     public String getFormattedCreatedAt() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         return sdf.format(createdAt);
+    }
+
+    public String getFormattedUpdatedAt() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
+        return dateFormat.format(updatedAt);
     }
 
     public int getProfileId() {

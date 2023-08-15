@@ -19,13 +19,16 @@ import org.mindrot.jbcrypt.BCrypt;
 import androidx.annotation.Nullable;
 
 import com.example.mediasocial.Models.Like;
+import com.example.mediasocial.Models.Profile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     //Khai bao tag
@@ -261,6 +264,143 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return usernameExists;
     }
+    @SuppressLint("Range")
+    public int getUserId(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"user_id"};
+        String selection = "email = ?";
+        String[] selectionArgs = {email};
+
+        Cursor cursor = db.query("users", columns, selection, selectionArgs, null, null, null);
+
+        int userId = -1;
+
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(cursor.getColumnIndex("user_id"));
+        }
+
+        cursor.close();
+        db.close();
+
+        return userId;
+    }
+
+    //Insert Data Profiles
+
+    //Lấy ra dữ liệu render
+    @SuppressLint("Range")
+    public Profile getProfile(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                "profile_id",
+                "last_name",
+                "first_name",
+                "user_name",
+                "image_lib",
+                "avatar",
+                "birthday",
+                "created_at",
+                "updated_at",
+                "user_id"
+        };
+        String selection = "user_id = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+
+        Cursor cursor = db.query("profiles", columns, selection, selectionArgs, null, null, null);
+
+        Profile profile = null;
+
+        if (cursor.moveToFirst()) {
+            int profileId = cursor.getInt(cursor.getColumnIndex("profile_id"));
+            String lastName = cursor.getString(cursor.getColumnIndex("last_name"));
+            String firstName = cursor.getString(cursor.getColumnIndex("first_name"));
+            String userName = cursor.getString(cursor.getColumnIndex("user_name"));
+            String imageLib = cursor.getString(cursor.getColumnIndex("image_lib"));
+            String avatar = cursor.getString(cursor.getColumnIndex("avatar"));
+            long birthdayMillis = cursor.getLong(cursor.getColumnIndex("birthday"));
+            long createdAtMillis = cursor.getLong(cursor.getColumnIndex("created_at"));
+            long updatedAtMillis = cursor.getLong(cursor.getColumnIndex("updated_at"));
+
+            profile = new Profile(profileId, lastName, firstName, userName, imageLib, avatar, new Date(birthdayMillis), new Date(createdAtMillis), new Date(updatedAtMillis), null, userId);
+        }
+
+        cursor.close();
+        db.close();
+
+        return profile;
+    }
+
+    //Thêm dữ liệu cho profiles => user_id
+    public boolean insertProfile(int userId, String userName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+        values.put("user_name", userName);
+        values.put("first_name", userName);
+        values.put("last_name", userName);
+        String currentTime = getCurrentDateTime();
+        values.put("created_at", currentTime);
+
+        long profileId = db.insert("profiles", null, values);
+        db.close();
+
+        return profileId != -1;
+    }
+
+    //Lấy username và lưu lại vào profiles
+    @SuppressLint("Range")
+    public String getUserName(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"name"};
+        String selection = "email = ?";
+        String[] selectionArgs = {email};
+
+        Cursor cursor = db.query("users", columns, selection, selectionArgs, null, null, null);
+
+        String userName = null;
+
+        if (cursor.moveToFirst()) {
+            userName = cursor.getString(cursor.getColumnIndex("name"));
+        }
+
+        cursor.close();
+        db.close();
+
+        return userName;
+    }
+
+    //Check profiles
+    public boolean isProfileExists(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"profile_id"};
+        String selection = "user_id = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+
+        Cursor cursor = db.query("profiles", columns, selection, selectionArgs, null, null, null);
+        boolean profileExists = cursor.moveToFirst();
+
+        cursor.close();
+        db.close();
+
+        return profileExists;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         // Copy the database from assets

@@ -34,7 +34,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
                     <TextView
-                        android:id="@+id/tvName"
+                        android:id="@+id/tvUsername"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="username"
