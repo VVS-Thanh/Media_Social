@@ -41,13 +41,19 @@ public class LogInActivity extends AppCompatActivity {
                 if (checkLogin(email, password)) {
                     String userName = db.getUserName(email);
                     int userId = db.getUserId(email);
+                    int roleId = db.getUserRoleId(userId);
                     if (!db.isProfileExists(userId)) {
                         db.insertProfile(userId, userName);
                     }
                     saveSession(email, userName, userId);
-//                    Profile userProfile = db.getUserProfile(email);
                     Toast.makeText(LogInActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LogInActivity.this, HomePageActivity.class);
+                    Intent intent;
+                    if (roleId == 2) {
+                        intent = new Intent(LogInActivity.this, HomePageActivity.class);
+                    } else {
+                        intent = new Intent(LogInActivity.this, AdminPostActivity.class);
+                        Log.d("AdminPage", "RoleID: " + roleId);
+                    }
                     intent.putExtra("username", userName);
                     startActivity(intent);
                     finish();

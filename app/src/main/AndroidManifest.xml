@@ -40,11 +40,24 @@
         <activity
             android:name=".HomePageActivity"
             android:label="Home Page"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".LogInActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LogInActivity" />
         </activity>
+        <activity
+            android:name=".AdminPostActivity"
+            android:label="Admin Page"
+            android:parentActivityName=".LogInActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LogInActivity" />
+        </activity>
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="User Profile"
+            android:theme="@style/AppTheme.NoActionBar" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

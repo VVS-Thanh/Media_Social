@@ -201,6 +201,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    //Lấy roleID
+    @SuppressLint("Range")
+    public int getUserRoleId(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int roleId = -1;
+        String query = "SELECT role_id FROM users WHERE user_id = " + userId;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            roleId = cursor.getInt(cursor.getColumnIndex("role_id"));
+            cursor.close();
+        }
+        return roleId;
+    }
+
+//    public long insertUserAdmin(String email, String phone, String name, String password, int roleId) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put("email", email);
+//        values.put("phone", phone);
+//        values.put("name", name);
+//
+//        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+//        values.put("password", hashedPassword);
+//        values.put("role_id", roleId);
+//        long userId = db.insert("users", null, values);
+//
+//        db.close();
+//
+//        return userId;
+//    }
 
     //Xử lý insert Data
     public boolean checkLogin(String email, String password) {
