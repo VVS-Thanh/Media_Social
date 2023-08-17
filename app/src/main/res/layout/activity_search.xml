@@ -4,33 +4,46 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent">
     <RelativeLayout
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rel_outer">
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel_outer">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rel_search_snap">
+                <include layout="@layout/snippet_search_bar"/>
+            </RelativeLayout>
+
+                <ListView    android:id="@+id/listUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel_search_snap"/>
+
+
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rel_search_snap">
-            <include layout="@layout/snippet_search_bar"/>
+            android:layout_below="@+id/rel_outer">
+            <include
+                android:id="@+id/layout_bottom"
+                layout="@layout/layout_bottom_navigation" />
         </RelativeLayout>
 
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/rel_search_snap">
-        </ListView>
-
     </RelativeLayout>
-    <include
-        android:id="@+id/layout_bottom"
-        app:layout_constraintBottom_toBottomOf="@+id/rel_outer"
-        app:layout_constraintLeft_toLeftOf="@+id/rel_outer"
-        layout="@layout/layout_bottom_navigation" />
+</ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

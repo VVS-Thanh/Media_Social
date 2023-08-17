@@ -246,5 +246,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //
 //    }
 
+public void insertdata(){
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
+    SQLiteDatabase db = dbHelper.getWritableDatabase();
+//    String sql1 = "INSERT INTO roles (role_id, role_name) VALUES (2,'USER')";
+// Define the SQL statement for the insert query
+    String sql = "INSERT INTO users (user_id, name, email, phone, password, role_id) VALUES (2, 'Katy', 'katy@gmail.com', '23123123122','1323','2')";
+//    db.execSQL(sql1);
+// Execute the SQL statement
+    db.execSQL(sql);
+
+// Close the database
+    db.close();
+
+}
 
 }

@@ -22,6 +22,6 @@ public class MainActivity extends AppCompatActivity {
         names = (TextView)findViewById(R.id.username);
         DatabaseHelper dbHelper = new DatabaseHelper(MainActivity.this);
         // Retrieve data from the existing table
-
+        dbHelper.insertdata();
     }
 }
