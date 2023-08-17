@@ -1,5 +1,7 @@
 package com.example.mediasocial.Models;
 
+import static androidx.core.content.res.TypedArrayUtils.getResourceId;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -32,6 +34,25 @@ public class Profile {
         this.deletedAt = deletedAt;
         this.userId = this.userId;
     }
+
+
+    public boolean hasAvatar() {
+        return avatar != null && !avatar.isEmpty();
+    }
+
+    public String getAvatarResName() {
+        if (hasAvatar()) {
+            return avatar;
+        } else {
+            return "user"; // Default avatar resource name
+        }
+    }
+
+    public int getAvatarResId() {
+        // Assuming that the avatar name in resources matches the image file name
+        return getResourceId(getAvatarResName(), "drawable");
+    }
+
 
     public String getFormattedCreatedAt() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
@@ -129,5 +150,9 @@ public class Profile {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    private int getResourceId(String resourceName, String resourceType) {
+        return 0;
     }
 }

@@ -39,8 +39,12 @@ public class HomePageActivity extends AppCompatActivity {
             tvUsername.setText(username);
         }
 
+
         Log.d("HomePageActivity", "Username: " + tvUsername.getText());
         Log.d("HomePageActivity", "UserID: " + userId);
+
+        userProfile = getProfile(userId);
+
 
         bottomNavigationView = findViewById(R.id.navigation);
 

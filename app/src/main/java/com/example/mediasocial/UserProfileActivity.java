@@ -39,8 +39,21 @@ public class UserProfileActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(UserProfileActivity.this);
 
-
         int userIdFromIntent = getIntent().getIntExtra(KEY_USERID, -1);
+        Profile userProfile = getProfile(userIdFromIntent);
+
+        if (userProfile != null) {
+            if (userProfile.hasAvatar()) {
+                int avatarResId = userProfile.getAvatarResId();
+                profileImage.setImageResource(avatarResId);
+                Log.d("UserProfileActivity", "Set custom avatar image");
+            } else {
+                Log.d("UserProfileActivity", "User does not have a custom avatar");
+            }
+        } else {
+            Log.d("UserProfileActivity", "User profile is null");
+        }
+        Log.d("UserProfileActivity", "UserID_Check: " + userIdFromIntent);
 
 
         displayUserProfile(userIdFromIntent);
@@ -57,12 +70,11 @@ public class UserProfileActivity extends AppCompatActivity {
     private void displayUserProfile(int userId) {
         Profile userProfile = db.getProfile(userId);
         if (userProfile != null) {
-            Log.d("UserProfileActivity", "User ID: " + userProfile.getUserId());
+            Log.d("UserProfileActivity", "User ID: " + userId);
             Log.d("UserProfileActivity", "User Name: " + userProfile.getUserName());
             Log.d("UserProfileActivity", "First Name: " + userProfile.getFirstName());
             Log.d("UserProfileActivity", "Last Name: " + userProfile.getLastName());
             Log.d("UserProfileActivity", "Profile ID: " + userProfile.getProfileId());
-
 
             tvName.setText(userProfile.getUserName());
             tvUserName.setText(userProfile.getUserName());
@@ -70,5 +82,9 @@ public class UserProfileActivity extends AppCompatActivity {
         } else {
             Log.e("UserProfileActivity", "User Profile is null");
         }
+    }
+
+    private Profile getProfile(int userId) {
+        return db.getProfile(userId);
     }
 }
