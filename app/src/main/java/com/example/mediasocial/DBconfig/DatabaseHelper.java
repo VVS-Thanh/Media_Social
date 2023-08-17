@@ -280,6 +280,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+    //Check Email
     public boolean isEmailRegistered(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("users", null, "email=?", new String[]{email}, null, null, null);
@@ -288,6 +289,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return emailExists;
     }
 
+    //Check UserName
     public boolean isUsernameTaken(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("users", null, "name=?", new String[]{username}, null, null, null);
@@ -319,6 +321,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //Insert Data Profiles
 
     //Lấy ra dữ liệu render
+    public boolean insertProfile(int userId, String userName, String firstName, String lastName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+
+        if (firstName == null || firstName.isEmpty()) {
+            values.put("first_name", userName);
+        } else {
+            values.put("first_name", firstName);
+        }
+
+        if (lastName == null || lastName.isEmpty()) {
+            values.put("last_name", userName);
+        } else {
+            values.put("last_name", lastName);
+        }
+
+        values.put("user_name", userName);
+        String currentTime = getCurrentDateTime();
+        values.put("created_at", currentTime);
+
+        long profileId = db.insert("profiles", null, values);
+        db.close();
+
+        return profileId != -1;
+    }
+
+    // Lấy dữ liệu render
     @SuppressLint("Range")
     public Profile getProfile(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -359,23 +389,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return profile;
-    }
-
-    //Thêm dữ liệu cho profiles => user_id
-    public boolean insertProfile(int userId, String userName) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("user_id", userId);
-        values.put("user_name", userName);
-        values.put("first_name", userName);
-        values.put("last_name", userName);
-        String currentTime = getCurrentDateTime();
-        values.put("created_at", currentTime);
-
-        long profileId = db.insert("profiles", null, values);
-        db.close();
-
-        return profileId != -1;
     }
 
     //Lấy username và lưu lại vào profiles

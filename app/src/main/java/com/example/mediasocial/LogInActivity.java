@@ -17,7 +17,7 @@ public class LogInActivity extends AppCompatActivity {
     private static final String PREF_NAME = "user_session";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_USERNAME = "name";
-    private static final String KEY_USERID = "userId";
+    static final String KEY_USERID = "userId";
     private EditText edtEmail;
     private EditText edtPassword;
     private Button btnLogin;
@@ -43,7 +43,12 @@ public class LogInActivity extends AppCompatActivity {
                     int userId = db.getUserId(email);
                     int roleId = db.getUserRoleId(userId);
                     if (!db.isProfileExists(userId)) {
-                        db.insertProfile(userId, userName);
+                        boolean isInserted = db.insertProfile(userId, userName, null, null);
+                        if (isInserted) {
+                            Log.d("LogInActivity", "Đã thêm thành công profile cho userID: " + userId);
+                        } else {
+                            Log.e("LogInActivity", "Profile đã được tạo trước đó bởi userID: " + userId);
+                        }
                     }
                     saveSession(email, userName, userId);
                     Toast.makeText(LogInActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
@@ -55,6 +60,7 @@ public class LogInActivity extends AppCompatActivity {
                         Log.d("AdminPage", "RoleID: " + roleId);
                     }
                     intent.putExtra("username", userName);
+                    intent.putExtra("userId", userId);
                     startActivity(intent);
                     finish();
                 } else {
@@ -72,6 +78,8 @@ public class LogInActivity extends AppCompatActivity {
         editor.putString(KEY_USERNAME, username);
         editor.putInt(KEY_USERID, userId);
         editor.apply();
+        Log.d("LogInActivity", "Saved UserID: " + userId);
+        Log.d("LogInActivity", "Saved Username: " + username);
     }
 
     private boolean checkLogin(String email, String password) {

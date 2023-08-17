@@ -21,6 +21,8 @@ public class HomePageActivity extends AppCompatActivity {
     private static final String PREF_NAME = "SessionPref";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_USERID = "userid";
+    private int userId;
+    private Profile userProfile;
     private Class<?> currentActivityClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +31,16 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.layout_newsfeed_page);
         tvUsername = findViewById(R.id.tvUsername);
         db = new DatabaseHelper(HomePageActivity.this);
-        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
-        String username = sharedPreferences.getString(KEY_USERNAME, "");
-        int userId = sharedPreferences.getInt(KEY_USERID, -1);
         Intent intent = getIntent();
         if (intent != null) {
-            username = intent.getStringExtra("username");
+            String username = intent.getStringExtra("username");
+            userId = intent.getIntExtra("userId", -1);
             tvUsername.setText(username);
         }
 
-        Log.d("HomePageActivity", "Username: " + username);
+        Log.d("HomePageActivity", "Username: " + tvUsername.getText());
+        Log.d("HomePageActivity", "UserID: " + userId);
 
         bottomNavigationView = findViewById(R.id.navigation);
 
@@ -48,14 +49,17 @@ public class HomePageActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.nav_item_home) {
+                    // Do something for home
                 } else if (id == R.id.nav_item_search) {
                     navigateToPage(SearchActivity.class);
                 } else if (id == R.id.nav_item_share) {
-//                    navigateToPage(ShareActivity.class);
+                    // Do something for share
                 } else if (id == R.id.nav_item_likes) {
-//                    navigateToPage(LikesActivity.class);
+                    // Do something for likes
                 } else if (id == R.id.nav_item_profile) {
-                    navigateToPage(UserProfileActivity.class);
+                    Intent userProfileIntent = new Intent(HomePageActivity.this, UserProfileActivity.class);
+                    userProfileIntent.putExtra(KEY_USERID, userId);
+                    startActivity(userProfileIntent);
                 }
                 return true;
             }
