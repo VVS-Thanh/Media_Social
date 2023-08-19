@@ -18,15 +18,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signpage);
-        DatabaseHelper db = new DatabaseHelper(MainActivity.this);
-        Role.insertRolesData(MainActivity.this);
+//        DatabaseHelper db = new DatabaseHelper(MainActivity.this);
 //        db.createDatabase();
+//
+//        Role.insertRolesData(MainActivity.this);
+//
 //        String adminEmail = "admin1@gmail.com";
 //        String adminPhone = "123456789";
-//        String adminName = "admin_Thanh";
+//        String adminName = "admin";
 //        String adminPassword = "123123123";
 //        int adminRoleId = 1;
-//        db = new DatabaseHelper(MainActivity.this);
 //        long adminUserId = db.insertUserAdmin(adminEmail, adminPhone, adminName, adminPassword, adminRoleId);
 //        if (adminUserId != -1) {
 //            Log.d("AdminCreation", "Admin user added successfully with ID: " + adminUserId);
