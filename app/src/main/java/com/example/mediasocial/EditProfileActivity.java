@@ -3,6 +3,7 @@ package com.example.mediasocial;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,25 +12,42 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.example.mediasocial.UserProfileActivity;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mediasocial.DBconfig.DatabaseHelper;
+import com.example.mediasocial.Models.Profile;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     private TextView tvUsername, tvFirstname, tvLastName, tvBirthday;
     private ImageButton btnImage;
+    private ImageView btnUpdate;
+    private ImageView btnBack;
     private CircleImageView profileImage;
     private Calendar calendar;
     private String oldUsername, oldFirstName, oldLastName;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private static final String PREF_NAME = "user_session";
+    private static final String KEY_USERID = "userId";
+    private SharedPreferences sharedPreferences;
+    private DatabaseHelper db;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +59,23 @@ public class EditProfileActivity extends AppCompatActivity {
         tvFirstname = findViewById(R.id.tvFistName);
         tvLastName = findViewById(R.id.tvLastName);
         tvBirthday = findViewById(R.id.tvBirthday);
+        btnUpdate = findViewById(R.id.btnUpdate);
+        btnBack = findViewById(R.id.btnBack);
+
+        db = new DatabaseHelper(EditProfileActivity.this);
+
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getInt(KEY_USERID, -1);
 
 
-        oldUsername = tvUsername.getText().toString();
-        oldFirstName = tvFirstname.getText().toString();
-        oldLastName = tvLastName.getText().toString();
+        populateProfileInfo();
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateProfileInfo();
+            }
+        });
 
         calendar = Calendar.getInstance();
 
@@ -58,6 +88,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 }
         );
+
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,4 +197,48 @@ public class EditProfileActivity extends AppCompatActivity {
         );
         datePickerDialog.show();
     }
+
+    private void populateProfileInfo() {
+        if (userId != -1) {
+            Profile profile = db.getProfile(userId);
+            if (profile != null) {
+                tvFirstname.setText(profile.getFirstName());
+                tvLastName.setText(profile.getLastName());
+                tvUsername.setText(profile.getUserName());
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String formattedBirthday = sdf.format(profile.getBirthday());
+                tvBirthday.setText(formattedBirthday);
+            }
+        }
+    }
+
+    private void updateProfileInfo() {
+        String newFirstName = tvFirstname.getText().toString().trim();
+        String newLastName = tvLastName.getText().toString().trim();
+        String newUserName = tvUsername.getText().toString().trim();
+        String newBirthdayStr = tvBirthday.getText().toString().trim();
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date newBirthday = sdf.parse(newBirthdayStr);
+
+            boolean isUpdated = db.updateProfile(userId,newUserName , newFirstName, newLastName, newBirthday);
+
+            if (isUpdated) {
+                Toast.makeText(this, "Cập nhật hồ sơ thành công", Toast.LENGTH_SHORT).show();
+                Intent userProfileIntent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
+                userProfileIntent.putExtra(KEY_USERID, userId);
+                startActivity(userProfileIntent);
+                finish();
+            } else {
+                Toast.makeText(this, "Không thể cập nhật hồ sơ", Toast.LENGTH_SHORT).show();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Ngày sinh không hợp lệ", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 }

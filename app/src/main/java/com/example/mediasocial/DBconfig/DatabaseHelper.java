@@ -6,27 +6,15 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.widget.Toast;
+
 import org.mindrot.jbcrypt.BCrypt;
 
-import androidx.annotation.Nullable;
-
-import com.example.mediasocial.Models.Like;
 import com.example.mediasocial.Models.Profile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 
@@ -393,6 +381,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             long updatedAtMillis = cursor.getLong(cursor.getColumnIndex("updated_at"));
 
             profile = new Profile(profileId, lastName, firstName, userName, imageLib, avatar, new Date(birthdayMillis), new Date(createdAtMillis), new Date(updatedAtMillis), null, userId);
+        } else{
+            Log.e(TAG, "No profile found for userId: " + userId);
         }
 
         cursor.close();
@@ -417,6 +407,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return profileExists;
     }
 
+    public boolean updateProfile(int userId, String newUsername, String newFirstName,String newLastName, Date newBirthday) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("user_name", newUsername);
+        values.put("first_name", newFirstName);
+        values.put("last_name", newLastName);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String formattedBirthday = sdf.format(newBirthday);
+        values.put("birthday", formattedBirthday);
+
+        String whereClause = "user_id = ?";
+        String[] whereArgs = {String.valueOf(userId)};
+
+        int rowsAffected = db.update("profiles", values, whereClause, whereArgs);
+        db.close();
+
+        return rowsAffected > 0;
+    }
 
 
 

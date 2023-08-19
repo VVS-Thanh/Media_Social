@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import static com.example.mediasocial.LogInActivity.KEY_USERID;
 import com.example.mediasocial.DBconfig.DatabaseHelper;
 import com.example.mediasocial.Models.Profile;
 
@@ -23,11 +22,10 @@ public class UserProfileActivity extends AppCompatActivity {
     private Button btnEditPfrofile;
     private CircleImageView profileImage;
     private DatabaseHelper db;
-    private static final String PREF_NAME = "SessionPref";
-    private static final String KEY_USERNAME = "username";
+    private static final String PREF_NAME = "user_session";
+    private static final String KEY_USERID = "userId";
     private SharedPreferences sharedPreferences;
-    private int userId;
-    private static final String KEY_USERID = "userid";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,26 +41,7 @@ public class UserProfileActivity extends AppCompatActivity {
         db = new DatabaseHelper(UserProfileActivity.this);
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        userId = sharedPreferences.getInt(KEY_USERID, -1);
-
-
-        userId = getIntent().getIntExtra(KEY_USERID, -1);
-        Profile userProfile = getProfile(userId);
-
-
-        if (userProfile != null) {
-            if (userProfile.hasAvatar()) {
-                int avatarResId = userProfile.getAvatarResId();
-                profileImage.setImageResource(avatarResId);
-                Log.d("UserProfileActivity", "Set custom avatar image");
-            } else {
-                Log.d("UserProfileActivity", "User does not have a custom avatar");
-            }
-        } else {
-            Log.d("UserProfileActivity", "User profile is null");
-        }
-        Log.d("UserProfileActivity", "UserID_Check: " + userId);
-
+        int userId = sharedPreferences.getInt(KEY_USERID, -1);
 
         displayUserProfile(userId);
 
@@ -70,8 +49,9 @@ public class UserProfileActivity extends AppCompatActivity {
         btnEditPfrofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserProfileActivity.this, EditProfileActivity.class);
-                startActivity(intent);
+                Intent userEditProfileIntent = new Intent( UserProfileActivity.this, EditProfileActivity.class);
+                userEditProfileIntent.putExtra(KEY_USERID, userId);
+                startActivity(userEditProfileIntent);
             }
         });
     }
