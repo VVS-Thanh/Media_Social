@@ -1,4 +1,5 @@
 package com.example.mediasocial;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,14 +15,15 @@ import com.example.mediasocial.DBconfig.DatabaseHelper;
 import com.example.mediasocial.Models.Profile;
 
 public class LogInActivity extends AppCompatActivity {
+    public static final String KEY_USERID ="userId";
     private static final String PREF_NAME = "user_session";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_USERNAME = "name";
-    static final String KEY_USERID = "userId";
     private EditText edtEmail;
     private EditText edtPassword;
     private Button btnLogin;
     private DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,28 +41,26 @@ public class LogInActivity extends AppCompatActivity {
                 String password = edtPassword.getText().toString();
 
                 if (checkLogin(email, password)) {
-                    String userName = db.getUserName(email);
                     int userId = db.getUserId(email);
                     int roleId = db.getUserRoleId(userId);
-                    if (!db.isProfileExists(userId)) {
-                        boolean isInserted = db.insertProfile(userId, userName, null, null);
-                        if (isInserted) {
-                            Log.d("LogInActivity", "Đã thêm thành công profile cho userID: " + userId);
-                        } else {
-                            Log.e("LogInActivity", "Profile đã được tạo trước đó bởi userID: " + userId);
-                        }
-                    }
-                    saveSession(email, userName, userId);
+//                    if (!db.isProfileExists(userId)) {
+//                        boolean isInserted = db.insertProfile(userId);
+//                        if (isInserted) {
+//                            Log.d("LogInActivity", "Đã thêm thành công profile cho userID: " + userId);
+//                        } else {
+//                            Log.e("LogInActivity", "Profile đã tồn tại: " + userId);
+//                        }
+//                    }
+                    saveSession(email, userId);
                     Toast.makeText(LogInActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                    Intent intent;
+                    Class<?> targetActivity;
                     if (roleId == 2) {
-                        intent = new Intent(LogInActivity.this, HomePageActivity.class);
+                        targetActivity = HomePageActivity.class;;
                     } else {
-                        intent = new Intent(LogInActivity.this, AdminPostActivity.class);
+                        targetActivity = AdminPostActivity.class;
                         Log.d("AdminPage", "RoleID: " + roleId);
                     }
-                    intent.putExtra("username", userName);
-                    intent.putExtra("userId", userId);
+                    Intent intent = new Intent(LogInActivity.this, targetActivity);
                     startActivity(intent);
                     finish();
                 } else {
@@ -71,20 +71,19 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
 
-    private void saveSession(String email, String username, int userId) {
+    private void saveSession(String email, int userId) {
         SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_USERNAME, username);
         editor.putInt(KEY_USERID, userId);
         editor.apply();
         Log.d("LogInActivity", "Saved UserID: " + userId);
-        Log.d("LogInActivity", "Saved Username: " + username);
     }
 
     private boolean checkLogin(String email, String password) {
         return db.checkLogin(email, password);
     }
-
-
 }
+
+
+

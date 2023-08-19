@@ -1,6 +1,7 @@
 package com.example.mediasocial;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,8 @@ public class UserProfileActivity extends AppCompatActivity {
     private DatabaseHelper db;
     private static final String PREF_NAME = "SessionPref";
     private static final String KEY_USERNAME = "username";
+    private SharedPreferences sharedPreferences;
+    private int userId;
     private static final String KEY_USERID = "userid";
 
     @Override
@@ -39,8 +42,13 @@ public class UserProfileActivity extends AppCompatActivity {
 
         db = new DatabaseHelper(UserProfileActivity.this);
 
-        int userIdFromIntent = getIntent().getIntExtra(KEY_USERID, -1);
-        Profile userProfile = getProfile(userIdFromIntent);
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getInt(KEY_USERID, -1);
+
+
+        userId = getIntent().getIntExtra(KEY_USERID, -1);
+        Profile userProfile = getProfile(userId);
+
 
         if (userProfile != null) {
             if (userProfile.hasAvatar()) {
@@ -53,10 +61,11 @@ public class UserProfileActivity extends AppCompatActivity {
         } else {
             Log.d("UserProfileActivity", "User profile is null");
         }
-        Log.d("UserProfileActivity", "UserID_Check: " + userIdFromIntent);
+        Log.d("UserProfileActivity", "UserID_Check: " + userId);
 
 
-        displayUserProfile(userIdFromIntent);
+        displayUserProfile(userId);
+
 
         btnEditPfrofile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,14 +78,15 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void displayUserProfile(int userId) {
         Profile userProfile = db.getProfile(userId);
+        String username = db.getUserName(userId);
+
         if (userProfile != null) {
             Log.d("UserProfileActivity", "User ID: " + userId);
             Log.d("UserProfileActivity", "User Name: " + userProfile.getUserName());
             Log.d("UserProfileActivity", "First Name: " + userProfile.getFirstName());
             Log.d("UserProfileActivity", "Last Name: " + userProfile.getLastName());
             Log.d("UserProfileActivity", "Profile ID: " + userProfile.getProfileId());
-
-            tvName.setText(userProfile.getUserName());
+            tvName.setText(username);
             tvUserName.setText(userProfile.getUserName());
             tvStatus.setText(userProfile.getFirstName() + " " + userProfile.getLastName());
         } else {

@@ -214,23 +214,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return roleId;
     }
 
-//    public long insertUserAdmin(String email, String phone, String name, String password, int roleId) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put("email", email);
-//        values.put("phone", phone);
-//        values.put("name", name);
-//
-//        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-//        values.put("password", hashedPassword);
-//        values.put("role_id", roleId);
-//        long userId = db.insert("users", null, values);
-//
-//        db.close();
-//
-//        return userId;
-//    }
+    public long insertUserAdmin(String email, String phone, String name, String password, int roleId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("email", email);
+        values.put("phone", phone);
+        values.put("name", name);
+
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        values.put("password", hashedPassword);
+        values.put("role_id", roleId);
+        long userId = db.insert("users", null, values);
+
+        db.close();
+
+        return userId;
+    }
 
     //Xử lý insert Data
     public boolean checkLogin(String email, String password) {
@@ -317,29 +317,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userId;
     }
 
+
+    //Lấy username
+    @SuppressLint("Range")
+    public String getUserName(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"name"};
+        String selection = "user_id = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+
+        Cursor cursor = db.query("users", columns, selection, selectionArgs, null, null, null);
+
+        String userName = null;
+
+        if (cursor.moveToFirst()) {
+            userName = cursor.getString(cursor.getColumnIndex("name"));
+        }
+
+        cursor.close();
+        db.close();
+
+        return userName;
+    }
+
     //Insert Data Profiles
 
     //Lấy ra dữ liệu render
-    public boolean insertProfile(int userId, String userName, String firstName, String lastName) {
+    public boolean insertProfile(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("user_id", userId);
-
-        if (firstName == null || firstName.isEmpty()) {
-            values.put("first_name", userName);
-        } else {
-            values.put("first_name", firstName);
-        }
-
-        if (lastName == null || lastName.isEmpty()) {
-            values.put("last_name", userName);
-        } else {
-            values.put("last_name", lastName);
-        }
-
-        values.put("user_name", userName);
-        String currentTime = getCurrentDateTime();
-        values.put("created_at", currentTime);
+        values.put("first_name", ""); // Leave empty for now
+        values.put("last_name", "");  // Leave empty for now
+        values.put("user_name", "profile" + userId);  // Leave empty for now
+        values.put("created_at", getCurrentDateTime());
 
         long profileId = db.insert("profiles", null, values);
         db.close();
@@ -390,28 +401,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return profile;
     }
 
-    //Lấy username và lưu lại vào profiles
-    @SuppressLint("Range")
-    public String getUserName(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {"name"};
-        String selection = "email = ?";
-        String[] selectionArgs = {email};
-
-        Cursor cursor = db.query("users", columns, selection, selectionArgs, null, null, null);
-
-        String userName = null;
-
-        if (cursor.moveToFirst()) {
-            userName = cursor.getString(cursor.getColumnIndex("name"));
-        }
-
-        cursor.close();
-        db.close();
-
-        return userName;
-    }
-
     //Check profiles
     public boolean isProfileExists(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -446,7 +435,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-        // Copy the database from assets
+
+
+
+
+
+    // Copy the database from assets
 //    public void copyDataBase () {
 //        try {
 //            InputStream inputStream = mContext.getAssets().open(DB_NAME);
