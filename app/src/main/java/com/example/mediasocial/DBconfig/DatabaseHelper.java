@@ -75,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "user_id integer PRIMARY KEY NOT NULL," +
                 "email text UNIQUE NOT NULL," +
                 "phone text NOT NULL UNIQUE," +
-                "name text NOT NULL," +
+                "name text NOT NULL UNIQUE," +
                 "password text NOT NULL," +
                 "created_at DATETIME DEFAULT NULL,"
                 + "updated_at DATETIME DEFAULT NULL,"
@@ -87,8 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sql1 = "CREATE TABLE posts ("
                 + "post_id integer PRIMARY KEY NOT NULL,"
                 + "content text NOT NUll,"
-                + "topic text NOT NULL,"
-                + "thumbnail_image text NOT NULL,"
+                + "thumbnail_image text DEFAULT NULL,"
                 + "created_at DATETIME DEFAULT NULL,"
                 + "updated_at DATETIME DEFAULT NULL,"
                 + "deleted_at DATETIME DEFAULT NULL,"
@@ -134,9 +133,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String sql6 = "CREATE TABLE profiles(" +
                 "profile_id integer NOT NULL PRIMARY KEY," +
-                "last_name text NOT NULL," +
-                "first_name text NOT NULL," +
-                "user_name text NOT NULL UNIQUE," +
+                "last_name text DEFAULT NULL," +
+                "first_name text DEFAULT NULL," +
+                "user_name text DEFAULT NULL UNIQUE," +
                 "image_lib text DEFAULT NULL," +
                 "avatar text DEFAULT NULL," +
                 "birthday DATETIME DEFAULT NULL," +

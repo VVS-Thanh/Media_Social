@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signpage);
+        DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+        Role.insertRolesData(MainActivity.this);
+//        db.createDatabase();
 //        String adminEmail = "admin1@gmail.com";
 //        String adminPhone = "123456789";
 //        String adminName = "admin_Thanh";
@@ -49,6 +52,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-//        Role.insertRolesData(this);
+
 
     }
