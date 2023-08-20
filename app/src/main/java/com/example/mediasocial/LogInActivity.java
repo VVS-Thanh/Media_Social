@@ -12,13 +12,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mediasocial.DBconfig.DatabaseHelper;
-import com.example.mediasocial.Models.Profile;
 
 public class LogInActivity extends AppCompatActivity {
-    public static final String KEY_USERID ="userId";
+    public static final String KEY_USERID = "userId";
     private static final String PREF_NAME = "user_session";
     private static final String KEY_EMAIL = "email";
-    private static final String KEY_USERNAME = "name";
     private EditText edtEmail;
     private EditText edtPassword;
     private Button btnLogin;
@@ -42,26 +40,21 @@ public class LogInActivity extends AppCompatActivity {
 
                 if (checkLogin(email, password)) {
                     int userId = db.getUserId(email);
-                    int roleId = db.getUserRoleId(userId);
-//                    if (!db.isProfileExists(userId)) {
-//                        boolean isInserted = db.insertProfile(userId);
-//                        if (isInserted) {
-//                            Log.d("LogInActivity", "Đã thêm thành công profile cho userID: " + userId);
-//                        } else {
-//                            Log.e("LogInActivity", "Profile đã tồn tại: " + userId);
-//                        }
-//                    }
-                    saveSession(email, userId);
-                    Toast.makeText(LogInActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                    Class<?> targetActivity;
-                    if (roleId == 2) {
-                        targetActivity = HomePageActivity.class;;
-                    } else {
-                        targetActivity = AdminPostActivity.class;
-                        Log.d("AdminPage", "RoleID: " + roleId);
+
+                    if (!db.isProfileExists(userId)) {
+                        boolean isInserted = db.insertProfile(userId);
+                        if (isInserted) {
+                            Log.d("LogInActivity", "Đã thêm thành công profile cho userID: " + userId);
+                        } else {
+                            Log.e("LogInActivity", "Profile đã tồn tại: " + userId);
+                        }
                     }
-                    Intent intent = new Intent(LogInActivity.this, targetActivity);
-                    startActivity(intent);
+
+                    saveSession(email, userId);
+
+                    // Chuyển hướng tới HomePageActivity
+                    Intent homePageIntent = new Intent(LogInActivity.this, HomePageActivity.class);
+                    startActivity(homePageIntent);
                     finish();
                 } else {
                     Toast.makeText(LogInActivity.this, "Đăng nhập thất bai! Vui lòng kiểm tra lại thông tin.", Toast.LENGTH_SHORT).show();
@@ -84,6 +77,3 @@ public class LogInActivity extends AppCompatActivity {
         return db.checkLogin(email, password);
     }
 }
-
-
-

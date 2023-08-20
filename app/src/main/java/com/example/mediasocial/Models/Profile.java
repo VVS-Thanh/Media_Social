@@ -36,22 +36,22 @@ public class Profile {
     }
 
 
-    public boolean hasAvatar() {
-        return avatar != null && !avatar.isEmpty();
-    }
-
-    public String getAvatarResName() {
-        if (hasAvatar()) {
-            return avatar;
-        } else {
-            return "user"; // Default avatar resource name
-        }
-    }
-
-    public int getAvatarResId() {
-        // Assuming that the avatar name in resources matches the image file name
-        return getResourceId(getAvatarResName(), "drawable");
-    }
+//    public boolean hasAvatar() {
+//        return avatar != null && !avatar.isEmpty();
+//    }
+//
+//    public String getAvatarResName() {
+//        if (hasAvatar()) {
+//            return avatar;
+//        } else {
+//            return "user"; // Default avatar resource name
+//        }
+//    }
+//
+//    public int getAvatarResId() {
+//        // Assuming that the avatar name in resources matches the image file name
+//        return getResourceId(getAvatarResName(), "drawable");
+//    }
 
 
     public String getFormattedCreatedAt() {
@@ -152,7 +152,7 @@ public class Profile {
         this.userId = userId;
     }
 
-    private int getResourceId(String resourceName, String resourceType) {
-        return 0;
-    }
+//    private int getResourceId(String resourceName, String resourceType) {
+//        return 0;
+//    }
 }

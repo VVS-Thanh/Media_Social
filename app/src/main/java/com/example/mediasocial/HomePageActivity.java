@@ -28,70 +28,70 @@ public class HomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_newsfeed_page);
+
         tvUsername = findViewById(R.id.tvUsername);
         db = new DatabaseHelper(HomePageActivity.this);
 
-
+        // Lấy userId từ SharedPreferences
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         userId = sharedPreferences.getInt(KEY_USERID, -1);
-        userProfile = db.getProfile(userId);
-        Log.d("Check", " UserName from profile: " + userProfile.getUserName());
-        if (userId != -1) {
-            if (!db.isProfileExists(userId)) {
-                boolean isInserted = db.insertProfile(userId);
-                if (isInserted) {
-                    Log.d("LogInActivity", "Đã thêm thành công profile cho userID: " + userId);
-                } else {
-                    Log.e("LogInActivity", "Profile đã tồn tại: " + userId);
-                }
-            }
-            String username = db.getUserName(userId);
-            if (username != null) {
-                tvUsername.setText(username);
-            }
 
-            Log.d("HomeActivity", "UserId: " + userId);
+        // Hiển thị tên người dùng
+        String username = db.getUserName(userId);
+        if (username != null) {
+            tvUsername.setText(username);
         }
 
         bottomNavigationView = findViewById(R.id.navigation);
 
+        // Sự kiện khi chọn các mục trên Bottom Navigation View
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.nav_item_home) {
-
+                    // Đã ở trang chủ
                 } else if (id == R.id.nav_item_search) {
-                    navigateToPage(SearchActivity.class);
+                    // Chuyển tới trang tìm kiếm
+//                    navigateToPage(SearchActivity.class);
                 } else if (id == R.id.nav_item_share) {
-
+                    // Chia sẻ nội dung
                 } else if (id == R.id.nav_item_likes) {
-
+                    // Xem danh sách yêu thích
                 } else if (id == R.id.nav_item_profile) {
+                    // Chuyển tới trang hồ sơ người dùng
                     Intent userProfileIntent = new Intent(HomePageActivity.this, UserProfileActivity.class);
                     userProfileIntent.putExtra(KEY_USERID, userId);
                     startActivity(userProfileIntent);
+                    finish();
                 }
                 return true;
             }
         });
-    }
-    private void navigateToPage(Class<?> destinationActivity) {
-        if (!isCurrentPage(destinationActivity)) {
-            Intent intent = new Intent(HomePageActivity.this, destinationActivity);
-            startActivity(intent);
-        } else {
-            reloadCurrentPage();
-        }
+
+        Log.d("HomePageActivity", "onCreate finished");
     }
 
-    private boolean isCurrentPage(Class<?> destinationActivity) {
-        return currentActivityClass != null && currentActivityClass.equals(destinationActivity);
-    }
-
-    private void reloadCurrentPage() {
-        Intent intent = new Intent(HomePageActivity.this, currentActivityClass);
-        startActivity(intent);
-        finish();
-    }
+    // Hàm chuyển tới trang nào đó (nếu đã mở thì reload)
+//    private void navigateToPage(Class<?> destinationActivity) {
+//        if (!isCurrentPage(destinationActivity)) {
+//            Intent intent = new Intent(HomePageActivity.this, destinationActivity);
+//            startActivity(intent);
+//        } else {
+//            reloadCurrentPage();
+//        }
+//    }
+//
+//    // Kiểm tra xem đã ở trang nào đó chưa
+//    private boolean isCurrentPage(Class<?> destinationActivity) {
+//        return currentActivityClass != null && currentActivityClass.equals(destinationActivity);
+//    }
+//
+//    // Tải lại trang hiện tại
+//    private void reloadCurrentPage() {
+//        Intent intent = new Intent(HomePageActivity.this, currentActivityClass);
+//        startActivity(intent);
+//        finish();
+//    }
 }
+

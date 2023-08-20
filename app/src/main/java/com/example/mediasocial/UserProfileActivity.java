@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.example.mediasocial.DBconfig.DatabaseHelper;
 import com.example.mediasocial.Models.Profile;
 
@@ -43,6 +45,8 @@ public class UserProfileActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         int userId = sharedPreferences.getInt(KEY_USERID, -1);
 
+        Log.d("UserProfile", "UserID_PRofile: " + userId);
+
         displayUserProfile(userId);
 
 
@@ -69,6 +73,14 @@ public class UserProfileActivity extends AppCompatActivity {
             tvName.setText(username);
             tvUserName.setText(userProfile.getUserName());
             tvStatus.setText(userProfile.getFirstName() + " " + userProfile.getLastName());
+//            if (userProfile.getAvatar() != null && !userProfile.getAvatar().isEmpty()) {
+//
+//                Glide.with(this)
+//                        .load(userProfile.getAvatar())
+//                        .into(profileImage);
+//            } else {
+//                profileImage.setImageResource(R.drawable.user);
+//            }
         } else {
             Log.e("UserProfileActivity", "User Profile is null");
         }

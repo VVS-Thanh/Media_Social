@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 
+import androidx.annotation.FloatRange;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.example.mediasocial.Models.Profile;
@@ -228,7 +230,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String selection = "email = ?";
         String[] selectionArgs = {email};
 
-        // Thực hiện truy vấn
         Cursor cursor = db.query("users", columns, selection, selectionArgs, null, null, null);
         boolean loggedIn = false;
 
@@ -335,11 +336,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertProfile(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+
         values.put("user_id", userId);
         values.put("first_name", ""); // Leave empty for now
         values.put("last_name", "");  // Leave empty for now
         values.put("user_name", "profile" + userId);  // Leave empty for now
+        String formattedCurrentDate = sdf.format(new Date());
+        values.put("birthday", formattedCurrentDate);
         values.put("created_at", getCurrentDateTime());
+//        values.put("avatar", "");
 
         long profileId = db.insert("profiles", null, values);
         db.close();
@@ -385,14 +392,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+//            long birthdayStr = cursor.getLong(cursor.getColumnIndex("birthday"));
             long createdAtMillis = cursor.getLong(cursor.getColumnIndex("created_at"));
             long updatedAtMillis = cursor.getLong(cursor.getColumnIndex("updated_at"));
 
             profile = new Profile(profileId, lastName, firstName, userName, imageLib, avatar, birthday, new Date(createdAtMillis), new Date(updatedAtMillis), null, userId);
-        } else{
-            Log.e(TAG, "No profile found for userId: " + userId);
         }
+//        else{
+//            Log.e(TAG, "No profile found for userId: " + userId);
+//        }
 
         cursor.close();
         db.close();
@@ -416,25 +424,83 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return profileExists;
     }
 
-    public boolean updateProfile(int userId, String newUsername, String newFirstName,String newLastName, Date newBirthday) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+//    public boolean updateProfile(int userId, String newUsername, String newFirstName,String newLastName, Date newBirthday) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//
+//        values.put("user_name", newUsername);
+//        values.put("first_name", newFirstName);
+//        values.put("last_name", newLastName);
+////        values.put("avatar", newAvatarPath);
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+//        String formattedBirthday = sdf.format(newBirthday);
+//        values.put("birthday", formattedBirthday);
+//
+//        String whereClause = "user_id = ?";
+//        String[] whereArgs = {String.valueOf(userId)};
+//
+//        int rowsAffected = db.update("profiles", values, whereClause, whereArgs);
+//        db.close();
+//
+//        return rowsAffected > 0;
+//    }
+public boolean updateProfile(int userId, String newUsername, String newFirstName, String newLastName, Date newBirthday, String newAvatarPath) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
 
-        values.put("user_name", newUsername);
-        values.put("first_name", newFirstName);
-        values.put("last_name", newLastName);
+    values.put("user_name", newUsername);
+    values.put("first_name", newFirstName);
+    values.put("last_name", newLastName);
+    values.put("avatar", newAvatarPath); // Truyền đường dẫn ảnh mới
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String formattedBirthday = sdf.format(newBirthday);
-        values.put("birthday", formattedBirthday);
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    String formattedBirthday = sdf.format(newBirthday);
+    values.put("birthday", formattedBirthday);
 
-        String whereClause = "user_id = ?";
-        String[] whereArgs = {String.valueOf(userId)};
+    String whereClause = "user_id = ?";
+    String[] whereArgs = {String.valueOf(userId)};
 
-        int rowsAffected = db.update("profiles", values, whereClause, whereArgs);
+    int rowsAffected = db.update("profiles", values, whereClause, whereArgs);
+    db.close();
+
+    return rowsAffected > 0;
+}
+
+
+//    public boolean updateAvatar(int userId, String newAvatarPath) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put("avatar", newAvatarPath);
+//
+//        String whereClause = "user_id = ?";
+//        String[] whereArgs = {String.valueOf(userId)};
+//
+//        int rowsAffected = db.update("profiles", values, whereClause, whereArgs);
+//        db.close();
+//
+//        return rowsAffected > 0;
+//    }
+
+    @SuppressLint("Range")
+    public String getAvatar(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {"avatar"};
+        String selection = "user_id = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+
+        Cursor cursor = db.query("profiles", columns, selection, selectionArgs, null, null, null);
+
+        String avatarPath = null;
+
+        if (cursor.moveToFirst()) {
+            avatarPath = cursor.getString(cursor.getColumnIndex("avatar"));
+        }
+
+        cursor.close();
         db.close();
 
-        return rowsAffected > 0;
+        return avatarPath;
     }
 
 

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //        Role.insertRolesData(MainActivity.this);
 //
-//        String adminEmail = "admin1@gmail.com";
+//        String adminEmail = "admin@gmail.com";
 //        String adminPhone = "123456789";
 //        String adminName = "admin";
 //        String adminPassword = "123123123";

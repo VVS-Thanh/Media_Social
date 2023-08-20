@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -42,18 +43,18 @@
             android:label="Home Page"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".LogInActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LogInActivity" />
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value=".LogInActivity" />-->
         </activity>
-        <activity
-            android:name=".AdminPostActivity"
-            android:label="Admin Page"
-            android:parentActivityName=".LogInActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LogInActivity" />
-        </activity>
+<!--        <activity-->
+<!--            android:name=".AdminPostActivity"-->
+<!--            android:label="Admin Page"-->
+<!--            android:parentActivityName=".LogInActivity">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value=".LogInActivity" />-->
+<!--        </activity>-->
         <activity
             android:name=".UserProfileActivity"
             android:label="User Profile"
@@ -67,7 +68,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UserProfileActivity" />
-        </activity>/
+        </activity>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

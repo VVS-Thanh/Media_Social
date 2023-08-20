@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.example.mediasocial.UserProfileActivity;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -48,7 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private DatabaseHelper db;
     private int userId;
-
+    String newAvatarPath = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +92,7 @@ public class EditProfileActivity extends AppCompatActivity {
         );
 
 
-        btnImage.setOnClickListener(new View.OnClickListener() {
+        profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openImagePicker();
@@ -138,6 +140,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
             profileImage.setImageURI(selectedImageUri);
+            newAvatarPath = selectedImageUri.toString();
         }
     }
 
@@ -201,7 +204,18 @@ public class EditProfileActivity extends AppCompatActivity {
     private void populateProfileInfo() {
         if (userId != -1) {
             Profile profile = db.getProfile(userId);
+            String avatarPath = db.getAvatar(userId);
             if (profile != null) {
+
+                if (avatarPath != null && !avatarPath.isEmpty()) {
+                    Glide.with(this)
+                            .load(avatarPath)
+                            .placeholder(R.drawable.user)
+                            .into(profileImage);
+                } else {
+                    // Sử dụng hình đại diện mặc định
+                    profileImage.setImageResource(R.drawable.user);
+                }
                 tvFirstname.setText(profile.getFirstName());
                 tvLastName.setText(profile.getLastName());
                 tvUsername.setText(profile.getUserName());
@@ -222,13 +236,23 @@ public class EditProfileActivity extends AppCompatActivity {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             Date newBirthday = sdf.parse(newBirthdayStr);
+//            String newAvatarPath = "";
 
-            boolean isUpdated = db.updateProfile(userId,newUserName , newFirstName, newLastName, newBirthday);
+            boolean isUpdated = db.updateProfile(userId,newUserName , newFirstName, newLastName, newBirthday,newAvatarPath);
 
             if (isUpdated) {
                 Toast.makeText(this, "Cập nhật hồ sơ thành công", Toast.LENGTH_SHORT).show();
                 tvBirthday.setText(sdf.format(newBirthday));
                 tvBirthday.invalidate();
+
+                if (!newAvatarPath.isEmpty()) {
+                    // Hiển thị ảnh mới bằng Glide
+                    Glide.with(this)
+                            .load(newAvatarPath)
+                            .placeholder(R.drawable.user)
+                            .into(profileImage);
+                }
+
                 Intent userProfileIntent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
                 userProfileIntent.putExtra(KEY_USERID, userId);
                 startActivity(userProfileIntent);
