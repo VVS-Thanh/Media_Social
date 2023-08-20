@@ -147,7 +147,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_input, null);
         final EditText inputEditText = viewInflated.findViewById(R.id.input);
-        inputEditText.setText(defaultValue); // Hiển thị giá trị cũ trong hộp thoại
+        inputEditText.setText(defaultValue);
         builder.setView(viewInflated);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -227,6 +227,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
             if (isUpdated) {
                 Toast.makeText(this, "Cập nhật hồ sơ thành công", Toast.LENGTH_SHORT).show();
+                tvBirthday.setText(sdf.format(newBirthday));
+                tvBirthday.invalidate();
                 Intent userProfileIntent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
                 userProfileIntent.putExtra(KEY_USERID, userId);
                 startActivity(userProfileIntent);

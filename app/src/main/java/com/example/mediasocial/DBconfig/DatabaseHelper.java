@@ -15,6 +15,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import com.example.mediasocial.Models.Profile;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 
@@ -376,11 +377,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String userName = cursor.getString(cursor.getColumnIndex("user_name"));
             String imageLib = cursor.getString(cursor.getColumnIndex("image_lib"));
             String avatar = cursor.getString(cursor.getColumnIndex("avatar"));
-            long birthdayMillis = cursor.getLong(cursor.getColumnIndex("birthday"));
+            String birthdayStr = cursor.getString(cursor.getColumnIndex("birthday"));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date birthday = null;
+            try {
+                birthday = sdf.parse(birthdayStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             long createdAtMillis = cursor.getLong(cursor.getColumnIndex("created_at"));
             long updatedAtMillis = cursor.getLong(cursor.getColumnIndex("updated_at"));
 
-            profile = new Profile(profileId, lastName, firstName, userName, imageLib, avatar, new Date(birthdayMillis), new Date(createdAtMillis), new Date(updatedAtMillis), null, userId);
+            profile = new Profile(profileId, lastName, firstName, userName, imageLib, avatar, birthday, new Date(createdAtMillis), new Date(updatedAtMillis), null, userId);
         } else{
             Log.e(TAG, "No profile found for userId: " + userId);
         }
