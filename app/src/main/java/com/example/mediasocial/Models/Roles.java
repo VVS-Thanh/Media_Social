@@ -1,5 +1,6 @@
 package com.example.mediasocial.Models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Roles {
@@ -55,5 +56,10 @@ public class Roles {
                 ", created_at=" + created_at +
                 ", updated_at=" + updated_at +
                 '}';
+    }
+    public static String getCurrentDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Date currentDate = new Date();
+        return dateFormat.format(currentDate);
     }
 }

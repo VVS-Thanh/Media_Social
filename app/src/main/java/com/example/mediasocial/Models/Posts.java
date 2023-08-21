@@ -5,16 +5,14 @@ import java.util.Date;
 public class Posts {
     private int post_id;
     private String content;
-    private String topic;
     private String thumbnail_image;
     private Date created_at;
     private Date updated_at;
     private int user_id;
 
-    public Posts(int post_id, String content, String topic, String thumbnail_image, Date created_at, Date updated_at, int user_id) {
+    public Posts(int post_id, String content, String thumbnail_image, Date created_at, Date updated_at, int user_id) {
         this.post_id = post_id;
         this.content = content;
-        this.topic = topic;
         this.thumbnail_image = thumbnail_image;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -45,13 +43,6 @@ public class Posts {
         this.content = content;
     }
 
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
 
     public String getThumbnail_image() {
         return thumbnail_image;
@@ -82,7 +73,6 @@ public class Posts {
         return "Posts{" +
                 "post_id=" + post_id +
                 ", content='" + content + '\'' +
-                ", topic='" + topic + '\'' +
                 ", thumbnail_image='" + thumbnail_image + '\'' +
                 ", created_at=" + created_at +
                 ", updated_at=" + updated_at +

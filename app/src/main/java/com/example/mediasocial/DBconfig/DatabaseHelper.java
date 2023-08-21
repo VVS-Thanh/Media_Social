@@ -1,4 +1,5 @@
 package com.example.mediasocial.DBconfig;
+import static com.example.mediasocial.Models.Roles.getCurrentDateTime;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -66,7 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "user_id integer PRIMARY KEY NOT NULL," +
                 "email text UNIQUE NOT NULL," +
                 "phone text NOT NULL UNIQUE," +
-                "name text NOT NULL," +
+                "name text NOT NULL UNIQUE," +
                 "password text NOT NULL," +
                 "created_at DATETIME DEFAULT NULL,"
                 + "updated_at DATETIME DEFAULT NULL,"
@@ -78,13 +79,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sql1 = "CREATE TABLE posts ("
                 + "post_id integer PRIMARY KEY NOT NULL,"
                 + "content text NOT NUll,"
-                + "topic text NOT NULL,"
-                + "thumbnail_image text NOT NULL,"
+                + "thumbnail_image text DEFAULT NULL,"
                 + "created_at DATETIME DEFAULT NULL,"
                 + "updated_at DATETIME DEFAULT NULL,"
                 + "deleted_at DATETIME DEFAULT NULL,"
                 + "user_id integer not null,"
-                + "FOREIGN KEY (user_id) REFERENCES users (id))";
+                + "FOREIGN KEY (user_id) REFERENCES users (user_id))";
         sqLiteDatabase.execSQL(sql1);
         //Khai bao bang comments
         String sql2 = "CREATE TABLE comments ("
@@ -101,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "id integer PRIMARY KEY NOT NULL,"
                 + "post_id integer not null,"
                 + "user_id integer not null,"
-                + "FOREIGN KEY (user_id) REFERENCES users (id),"
+                + "FOREIGN KEY (user_id) REFERENCES users (user_id),"
                 + "FOREIGN KEY (post_id) REFERENCES posts (post_id))";
         sqLiteDatabase.execSQL(sql3);
 
@@ -111,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "user_id integer not null," +
                 "created_time DATETIME," +
                 "updated_time DATETIME,"
-                + "FOREIGN KEY (user_id) REFERENCES users (id),"
+                + "FOREIGN KEY (user_id) REFERENCES users (user_id),"
                 + "FOREIGN KEY (post_id) REFERENCES posts (post_id))";
         sqLiteDatabase.execSQL(sql4);
 
@@ -119,15 +119,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "id integer PRIMARY KEY NOT NULL,"
                 + "post_id integer not null,"
                 + "user_id integer not null,"
-                + "FOREIGN KEY (user_id) REFERENCES users (id),"
+                + "FOREIGN KEY (user_id) REFERENCES users (user_id),"
                 + "FOREIGN KEY (post_id) REFERENCES posts (post_id))";
         sqLiteDatabase.execSQL(sql5);
 
         String sql6 = "CREATE TABLE profiles(" +
                 "profile_id integer NOT NULL PRIMARY KEY," +
-                "last_name text NOT NULL," +
-                "first_name text NOT NULL," +
-                "user_name text NOT NULL UNIQUE," +
+                "last_name text DEFAULT NULL," +
+                "first_name text DEFAULT NULL," +
+                "user_name text DEFAULT NULL UNIQUE," +
                 "image_lib text DEFAULT NULL," +
                 "avatar text DEFAULT NULL," +
                 "birthday DATETIME DEFAULT NULL," +
@@ -135,7 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "updated_at DATETIME DEFAULT NULL," +
                 "deleted_at DATETIME DEFAULT NULL," +
                 "user_id integer NOT NULL," +
-                "FOREIGN KEY (user_id) REFERENCES users ( id))";
+                "FOREIGN KEY (user_id) REFERENCES users ( user_id))";
         sqLiteDatabase.execSQL(sql6);
 
         sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON;");
@@ -249,10 +249,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 public void insertdata(){
         DatabaseHelper dbHelper = new DatabaseHelper(mContext);
     SQLiteDatabase db = dbHelper.getWritableDatabase();
-//    String sql1 = "INSERT INTO roles (role_id, role_name) VALUES (2,'USER')";
+    String sql1 = "INSERT INTO roles (role_id, role_name) VALUES (2,'USER')";
 // Define the SQL statement for the insert query
-    String sql = "INSERT INTO users (user_id, name, email, phone, password, role_id) VALUES (2, 'Katy', 'katy@gmail.com', '23123123122','1323','2')";
-//    db.execSQL(sql1);
+    String sql = "INSERT INTO users (user_id, name, email, phone, password, role_id) VALUES (1, 'Katy', 'katy@gmail.com', '23123123122','1323',2)";
+    db.execSQL(sql1);
 // Execute the SQL statement
     db.execSQL(sql);
 
@@ -260,5 +260,19 @@ public void insertdata(){
     db.close();
 
 }
+public boolean insertPosting(int userId, String content) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put("user_id", userId);
+    values.put("content", content);  // Leave empty for now
+    values.put("created_at", getCurrentDateTime());
 
+    long post_id = db.insert("posts", null, values);
+    db.close();
+    if (post_id == -1)
+        return false;
+    else {
+        return true;
+    }
+}
 }

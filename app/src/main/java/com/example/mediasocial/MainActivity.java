@@ -2,12 +2,15 @@ package com.example.mediasocial;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.example.mediasocial.DBconfig.DatabaseHelper;
+import com.example.mediasocial.Home.HomePageActivity;
+import com.example.mediasocial.Share.ShareActivity;
 
 public class MainActivity extends AppCompatActivity {
     TextView names;
@@ -23,5 +26,8 @@ public class MainActivity extends AppCompatActivity {
         DatabaseHelper dbHelper = new DatabaseHelper(MainActivity.this);
         // Retrieve data from the existing table
         dbHelper.insertdata();
+//        Intent intent = new Intent(MainActivity.this, ShareActivity.class);
+//        startActivity(intent);
+//        finish();
     }
 }
