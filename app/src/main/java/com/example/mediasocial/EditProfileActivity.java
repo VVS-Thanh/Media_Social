@@ -4,9 +4,11 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -31,7 +33,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,7 +54,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private DatabaseHelper db;
     private int userId;
-    String newAvatarPath = "";
+    String newAvatarPath = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,25 +83,22 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        calendar = Calendar.getInstance();
+
 
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri selectedImageUri = result.getData().getData();
-                        profileImage.setImageURI(selectedImageUri);
+                        newAvatarPath = selectedImageUri.toString(); // Lưu đường dẫn hình ảnh mới
+                        Glide.with(EditProfileActivity.this)
+                                .load(selectedImageUri)
+                                .into(profileImage);
                     }
                 }
         );
 
-
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImagePicker();
-            }
-        });
+        calendar = Calendar.getInstance();
 
         tvUsername.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,23 +127,22 @@ public class EditProfileActivity extends AppCompatActivity {
                 showDatePickerDialog();
             }
         });
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImagePicker();
+            }
+        });
     }
+
 
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         imagePickerLauncher.launch(intent);
+        Log.d("AvatarPath", "Image picker event triggered");
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            Uri selectedImageUri = data.getData();
-            profileImage.setImageURI(selectedImageUri);
-            newAvatarPath = selectedImageUri.toString();
-        }
-    }
 
     private void showInputDialog(final TextView textView, String title, String defaultValue) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -206,16 +206,6 @@ public class EditProfileActivity extends AppCompatActivity {
             Profile profile = db.getProfile(userId);
             String avatarPath = db.getAvatar(userId);
             if (profile != null) {
-
-                if (avatarPath != null && !avatarPath.isEmpty()) {
-                    Glide.with(this)
-                            .load(avatarPath)
-                            .placeholder(R.drawable.user)
-                            .into(profileImage);
-                } else {
-                    // Sử dụng hình đại diện mặc định
-                    profileImage.setImageResource(R.drawable.user);
-                }
                 tvFirstname.setText(profile.getFirstName());
                 tvLastName.setText(profile.getLastName());
                 tvUsername.setText(profile.getUserName());
@@ -236,22 +226,13 @@ public class EditProfileActivity extends AppCompatActivity {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             Date newBirthday = sdf.parse(newBirthdayStr);
-//            String newAvatarPath = "";
 
-            boolean isUpdated = db.updateProfile(userId,newUserName , newFirstName, newLastName, newBirthday,newAvatarPath);
+            boolean isUpdated = db.updateProfileWithAvatar(userId, newUserName, newFirstName, newLastName, newBirthday, newAvatarPath);
 
             if (isUpdated) {
                 Toast.makeText(this, "Cập nhật hồ sơ thành công", Toast.LENGTH_SHORT).show();
                 tvBirthday.setText(sdf.format(newBirthday));
                 tvBirthday.invalidate();
-
-                if (!newAvatarPath.isEmpty()) {
-                    // Hiển thị ảnh mới bằng Glide
-                    Glide.with(this)
-                            .load(newAvatarPath)
-                            .placeholder(R.drawable.user)
-                            .into(profileImage);
-                }
 
                 Intent userProfileIntent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
                 userProfileIntent.putExtra(KEY_USERID, userId);
@@ -267,4 +248,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+
 }
+
+
+
+
+
+

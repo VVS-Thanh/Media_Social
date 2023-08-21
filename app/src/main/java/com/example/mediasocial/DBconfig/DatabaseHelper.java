@@ -445,18 +445,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //
 //        return rowsAffected > 0;
 //    }
-public boolean updateProfile(int userId, String newUsername, String newFirstName, String newLastName, Date newBirthday, String newAvatarPath) {
+public boolean updateProfileWithAvatar(int userId, String newUsername, String newFirstName, String newLastName, Date newBirthday, String newAvatarPath) {
     SQLiteDatabase db = this.getWritableDatabase();
     ContentValues values = new ContentValues();
 
     values.put("user_name", newUsername);
     values.put("first_name", newFirstName);
     values.put("last_name", newLastName);
-    values.put("avatar", newAvatarPath); // Truyền đường dẫn ảnh mới
 
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     String formattedBirthday = sdf.format(newBirthday);
     values.put("birthday", formattedBirthday);
+
+    values.put("avatar", newAvatarPath); // Cập nhật đường dẫn avatar mới
 
     String whereClause = "user_id = ?";
     String[] whereArgs = {String.valueOf(userId)};

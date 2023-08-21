@@ -2,6 +2,7 @@ package com.example.mediasocial;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.mediasocial.DBconfig.DatabaseHelper;
 import com.example.mediasocial.Models.Profile;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -70,17 +72,17 @@ public class UserProfileActivity extends AppCompatActivity {
             Log.d("UserProfileActivity", "First Name: " + userProfile.getFirstName());
             Log.d("UserProfileActivity", "Last Name: " + userProfile.getLastName());
             Log.d("UserProfileActivity", "Profile ID: " + userProfile.getProfileId());
+            Log.d("AvatarPath", "Selected image absolute path: " + userProfile.getAvatar());
             tvName.setText(username);
             tvUserName.setText(userProfile.getUserName());
             tvStatus.setText(userProfile.getFirstName() + " " + userProfile.getLastName());
-//            if (userProfile.getAvatar() != null && !userProfile.getAvatar().isEmpty()) {
-//
-//                Glide.with(this)
-//                        .load(userProfile.getAvatar())
-//                        .into(profileImage);
-//            } else {
-//                profileImage.setImageResource(R.drawable.user);
-//            }
+            if (userProfile.getAvatar() != null && !userProfile.getAvatar().isEmpty()) {
+                Glide.with(this)
+                        .load(Uri.parse(userProfile.getAvatar()))
+                        .into(profileImage);
+            } else {
+                profileImage.setImageResource(R.drawable.user);
+            }
         } else {
             Log.e("UserProfileActivity", "User Profile is null");
         }
