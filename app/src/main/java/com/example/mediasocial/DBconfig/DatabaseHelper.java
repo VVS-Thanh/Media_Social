@@ -15,6 +15,7 @@ import androidx.annotation.FloatRange;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.example.mediasocial.Models.Post;
 import com.example.mediasocial.Models.Profile;
 import com.example.mediasocial.Models.User;
 
@@ -45,9 +46,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public SQLiteDatabase getWritableDatabase() {
         final SQLiteDatabase db;
-        if(mDefaultWritableDatabase != null){
+        if (mDefaultWritableDatabase != null) {
             db = mDefaultWritableDatabase;
-        }else{
+        } else {
             db = super.getWritableDatabase();
         }
         return db;
@@ -59,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String sql8 = "CREATE TABLE roles (" +
                 "role_id integer PRIMARY KEY NOT NULL," +
-                "role_name text NOT NULL,"+
+                "role_name text NOT NULL," +
                 "created_at DATETIME DEFAULT NULL,"
                 + "updated_at DATETIME DEFAULT NULL,"
                 + "deleted_at DATETIME DEFAULT NULL)";
@@ -144,7 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade (SQLiteDatabase db,int i, int i1){
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         this.mDefaultWritableDatabase = db;
         db.execSQL("DROP TABLE IF EXISTS roles");
         db.execSQL("DROP TABLE IF EXISTS users");
@@ -156,13 +157,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS profiles");
 
     }
+
     @Override
-    public synchronized void close(){
-        if(mDefaultWritableDatabase!=null){
+    public synchronized void close() {
+        if (mDefaultWritableDatabase != null) {
             mDefaultWritableDatabase.close();
         }
         super.close();
     }
+
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
@@ -171,6 +174,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
     }
+
     //Kiem tra neu chua co db thi tao moi con co roi thi copy db vao asset.
     public void createDatabase() {
         if (!checkDataBase()) {
@@ -178,6 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //            copyDataBase();
         }
     }
+
     //Kiem tra thu db co ton tai chua
     public boolean checkDataBase() {
         SQLiteDatabase checkDB = null;
@@ -219,6 +224,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         values.put("password", hashedPassword);
         values.put("role_id", roleId);
+        String currentTime = getCurrentDateTime();
+        values.put("created_at", currentTime);
         long userId = db.insert("users", null, values);
 
         db.close();
@@ -252,6 +259,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
+
     public Boolean insertUser(String email, String name, String phone, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -272,6 +280,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
     }
+
     //Check Email
     public boolean isEmailRegistered(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -289,6 +298,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return usernameExists;
     }
+
     @SuppressLint("Range")
     public int getUserId(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -388,8 +398,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
-
     // Lấy dữ liệu render
     @SuppressLint("Range")
     public Profile getProfile(int userId) {
@@ -460,7 +468,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return profileExists;
     }
 
-//    public boolean updateProfile(int userId, String newUsername, String newFirstName,String newLastName, Date newBirthday) {
+    //    public boolean updateProfile(int userId, String newUsername, String newFirstName,String newLastName, Date newBirthday) {
 //        SQLiteDatabase db = this.getWritableDatabase();
 //        ContentValues values = new ContentValues();
 //
@@ -481,28 +489,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //
 //        return rowsAffected > 0;
 //    }
-public boolean updateProfileWithAvatar(int userId, String newUsername, String newFirstName, String newLastName, Date newBirthday, String newAvatarPath) {
-    SQLiteDatabase db = this.getWritableDatabase();
-    ContentValues values = new ContentValues();
+    public boolean updateProfileWithAvatar(int userId, String newUsername, String newFirstName, String newLastName, Date newBirthday, String newAvatarPath) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
 
-    values.put("user_name", newUsername);
-    values.put("first_name", newFirstName);
-    values.put("last_name", newLastName);
+        values.put("user_name", newUsername);
+        values.put("first_name", newFirstName);
+        values.put("last_name", newLastName);
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-    String formattedBirthday = sdf.format(newBirthday);
-    values.put("birthday", formattedBirthday);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String formattedBirthday = sdf.format(newBirthday);
+        values.put("birthday", formattedBirthday);
 
-    values.put("avatar", newAvatarPath); // Cập nhật đường dẫn avatar mới
+        values.put("avatar", newAvatarPath); // Cập nhật đường dẫn avatar mới
 
-    String whereClause = "user_id = ?";
-    String[] whereArgs = {String.valueOf(userId)};
+        String whereClause = "user_id = ?";
+        String[] whereArgs = {String.valueOf(userId)};
 
-    int rowsAffected = db.update("profiles", values, whereClause, whereArgs);
-    db.close();
+        int rowsAffected = db.update("profiles", values, whereClause, whereArgs);
+        db.close();
 
-    return rowsAffected > 0;
-}
+        return rowsAffected > 0;
+    }
 
 
 //    public boolean updateAvatar(int userId, String newAvatarPath) {
@@ -560,12 +568,120 @@ public boolean updateProfileWithAvatar(int userId, String newUsername, String ne
     }
 
 
+    public List<Post> getAllPostsByUserId(int userId) {
+        List<Post> postList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {"post_id", "content", "thumbnail_image", "created_at"};
+
+        String selection = "user_id = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+
+        Cursor cursor = db.query("posts", projection, selection, selectionArgs, null, null, null);
+
+        while (cursor.moveToNext()) {
+            int postId = cursor.getInt(cursor.getColumnIndexOrThrow("post_id"));
+            String content = cursor.getString(cursor.getColumnIndexOrThrow("content"));
+            String thumbnailImage = cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_image"));
+            long createdAtMillis = cursor.getLong(cursor.getColumnIndexOrThrow("created_at"));
+
+            Date createdAt = new Date(createdAtMillis);
+
+            Post post = new Post(postId, content, thumbnailImage, createdAt, null, null, userId);
+            postList.add(post);
+        }
+
+        cursor.close();
+        db.close();
+
+        return postList;
+    }
+
+
+    public boolean updateUserRoleWithRoleId(int roleId, int userId) {
+        if (roleId != 1 && roleId != 2) {
+            Log.e(TAG, "Invalid role ID. Only role IDs 1 (admin) and 2 (user) are allowed.");
+            return false;
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("role_id", roleId);
+
+        int rowsAffected = db.update("users", values, "user_id = ?",
+                new String[]{String.valueOf(userId)});
+
+        return rowsAffected > 0;
+    }
+
+    public boolean deleteUser(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.beginTransaction();
+
+            // Xoá các bài đăng của người dùng
+            db.delete("posts", "user_id = ?", new String[]{String.valueOf(userId)});
+
+            // Xoá các bình luận của người dùng
+            db.delete("comments", "post_id IN (SELECT post_id FROM posts WHERE user_id = ?)", new String[]{String.valueOf(userId)});
+
+            // Xoá các lượt thích của người dùng
+            db.delete("likes", "post_id IN (SELECT post_id FROM posts WHERE user_id = ?)", new String[]{String.valueOf(userId)});
+
+            // Xoá thông tin liên quan đến bình luận của người dùng
+            db.delete("comment_of_user", "user_id = ?", new String[]{String.valueOf(userId)});
+
+            // Xoá thông tin liên quan đến bài đăng của người dùng
+            db.delete("post_of_user", "user_id = ?", new String[]{String.valueOf(userId)});
+
+            // Xoá thông tin liên quan đến hồ sơ cá nhân của người dùng
+            db.delete("profiles", "user_id = ?", new String[]{String.valueOf(userId)});
+
+            // Xoá người dùng
+            db.delete("users", "user_id = ?", new String[]{String.valueOf(userId)});
+
+            db.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
+}
 
 
 
 
-
-
+//    @SuppressLint("Range")
+////    public List<User> getAllUsers() {
+////        List<User> userList = new ArrayList<>();
+////        SQLiteDatabase db = this.getReadableDatabase();
+////
+////        String[] columns = {"id", "email", "phone", "name", "password", "created_at", "role_id"};
+////        Cursor cursor = db.query("users", columns, null, null, null, null, null);
+////
+////        if (cursor != null && cursor.moveToFirst()) {
+////            do {
+////                int userId = cursor.getInt(cursor.getColumnIndex("id"));
+////                String email = cursor.getString(cursor.getColumnIndex("email"));
+////                String phone = cursor.getString(cursor.getColumnIndex("phone"));
+////                String name = cursor.getString(cursor.getColumnIndex("name"));
+////                String password = cursor.getString(cursor.getColumnIndex("password"));
+////                long createdAtMillis = cursor.getLong(cursor.getColumnIndexOrThrow("created_at"));
+////                Date createdAt = new Date(createdAtMillis);
+////                int roleId = cursor.getInt(cursor.getColumnIndex("role_id"));
+////
+////                User user = new User(userId, email, phone, name, password, createdAt, null, null, roleId);
+////                userList.add(user);
+////            } while (cursor.moveToNext());
+////
+////            cursor.close();
+////        }
+////
+////        return userList;
+////    }
 
 
 
@@ -635,4 +751,3 @@ public boolean updateProfileWithAvatar(int userId, String newUsername, String ne
 //    }
 
 
-}

@@ -17,7 +17,7 @@ public class User {
     private Date updatedAt;
     private Date deletedAt;
     private int roleId;
-    private List<Post> userPosts;
+//    private List<Post> userPosts;
 
     public User(int userId, String email, String phone, String name, String password,
                 Date createdAt, Date updatedAt, Date deletedAt, int roleId) {
@@ -31,49 +31,48 @@ public class User {
         this.deletedAt = deletedAt;
         this.roleId = roleId;
 
-        this.userPosts = new ArrayList<>();
+//        this.userPosts = new ArrayList<>();
     }
+//
+//
+//
+//    public List<Post> getUserPosts() {
+//        return userPosts;
+//    }
+//
+//    public void addUserPost(Post post) {
+//        userPosts.add(post);
+//    }
+//
+//    public void addPost(int postId, String content, String topic, String thumbnailImage,
+//                        Date createdAt, Date updatedAt, Date deletedAt) {
+//        Post post = new Post(postId, content, thumbnailImage,
+//                createdAt, updatedAt, deletedAt, getUserId());
+//        userPosts.add(post);
+//    }
 
-
-
-    public List<Post> getUserPosts() {
-        return userPosts;
-    }
-
-    public void addUserPost(Post post) {
-        userPosts.add(post);
-    }
-
-    public void addPost(int postId, String content, String topic, String thumbnailImage,
-                        Date createdAt, Date updatedAt, Date deletedAt) {
-        Post post = new Post(postId, content, topic, thumbnailImage,
-                createdAt, updatedAt, deletedAt, getUserId());
-        userPosts.add(post);
-    }
-
-    public void editPost(int postId, String content, String topic, String thumbnailImage,
-                         Date updatedAt) {
-        for (Post post : userPosts) {
-            if (post.getPostId() == postId) {
-                post.setContent(content);
-                post.setTopic(topic);
-                post.setThumbnailImage(thumbnailImage);
-                post.setUpdatedAt(updatedAt);
-                break;
-            }
-        }
-    }
-
-    public void deletePost(int postId) {
-        Iterator<Post> iterator = userPosts.iterator();
-        while (iterator.hasNext()) {
-            Post post = iterator.next();
-            if (post.getPostId() == postId) {
-                iterator.remove();
-                break;
-            }
-        }
-    }
+//    public void editPost(int postId, String content, String topic, String thumbnailImage,
+//                         Date updatedAt) {
+//        for (Post post : userPosts) {
+//            if (post.getPostId() == postId) {
+//                post.setContent(content);
+//                post.setThumbnailImage(thumbnailImage);
+//                post.setUpdatedAt(updatedAt);
+//                break;
+//            }
+//        }
+//    }
+//
+//    public void deletePost(int postId) {
+//        Iterator<Post> iterator = userPosts.iterator();
+//        while (iterator.hasNext()) {
+//            Post post = iterator.next();
+//            if (post.getPostId() == postId) {
+//                iterator.remove();
+//                break;
+//            }
+//        }
+//    }
 
     public String getFormattedCreatedAt() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());

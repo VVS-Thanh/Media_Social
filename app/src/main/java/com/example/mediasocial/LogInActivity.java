@@ -38,9 +38,17 @@ public class LogInActivity extends AppCompatActivity {
                 String email = edtEmail.getText().toString();
                 String password = edtPassword.getText().toString();
 
-                if (checkLogin(email, password)) {
-                    int userId = db.getUserId(email);
 
+
+                    if (checkLogin(email, password)) {
+                    int userId = db.getUserId(email);
+                    int roleId = db.getUserRoleId(userId);
+                    if (roleId == 1) {
+                        Intent AdminIntent = new Intent(LogInActivity.this, AdminPostActivity.class);
+                        startActivity(AdminIntent);
+                        finish();
+                    }
+                    else {
                     if (!db.isProfileExists(userId)) {
                         boolean isInserted = db.insertProfile(userId);
                         if (isInserted) {
@@ -56,6 +64,7 @@ public class LogInActivity extends AppCompatActivity {
                     Intent homePageIntent = new Intent(LogInActivity.this, HomePageActivity.class);
                     startActivity(homePageIntent);
                     finish();
+                    }
                 } else {
                     Toast.makeText(LogInActivity.this, "Đăng nhập thất bai! Vui lòng kiểm tra lại thông tin.", Toast.LENGTH_SHORT).show();
                     edtPassword.setText("");

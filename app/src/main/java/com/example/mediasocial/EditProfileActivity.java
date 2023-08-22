@@ -76,6 +76,16 @@ public class EditProfileActivity extends AppCompatActivity {
 
         populateProfileInfo();
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent userProfileIntent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
+                userProfileIntent.putExtra(KEY_USERID, userId);
+                startActivity(userProfileIntent);
+                finish();
+            }
+        });
+
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,13 +216,21 @@ public class EditProfileActivity extends AppCompatActivity {
             Profile profile = db.getProfile(userId);
             String avatarPath = db.getAvatar(userId);
             if (profile != null) {
+                if (profile.getAvatar() != null && !profile.getAvatar().isEmpty()){
+                    Uri uri = Uri.parse(avatarPath);
+                    Log.d("Uri", uri.toString());
+                    Glide.with(EditProfileActivity.this)
+                            .load(uri) // Đường dẫn đến hình ảnh
+                            .centerCrop()
+                            .into(profileImage);
+                }
                 tvFirstname.setText(profile.getFirstName());
                 tvLastName.setText(profile.getLastName());
                 tvUsername.setText(profile.getUserName());
-
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String formattedBirthday = sdf.format(profile.getBirthday());
                 tvBirthday.setText(formattedBirthday);
+
             }
         }
     }

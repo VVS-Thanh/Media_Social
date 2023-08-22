@@ -7,18 +7,16 @@ import java.util.Locale;
 public class Post {
     private int postId;
     private String content;
-    private String topic;
     private String thumbnailImage;
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
     private int userId;
 
-    public Post(int postId, String content, String topic, String thumbnailImage,
+    public Post(int postId, String content, String thumbnailImage,
                 Date createdAt, Date updatedAt, Date deletedAt, int userId) {
         this.postId = postId;
         this.content = content;
-        this.topic = topic;
         this.thumbnailImage = thumbnailImage;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -45,14 +43,6 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
     }
 
     public String getThumbnailImage() {
@@ -97,7 +87,6 @@ public class Post {
 
     public String getPostInfo() {
         String info = "Post ID: " + postId + "\n"
-                + "Topic: " + topic + "\n"
                 + "Content: " + content + "\n"
                 + "Created At: " + getFormattedCreatedAt() + "\n"
                 + "Thumbnail Image: " + thumbnailImage + "\n"
