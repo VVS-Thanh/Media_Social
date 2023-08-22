@@ -52,14 +52,25 @@ public class HomePageActivity extends AppCompatActivity {
                 if (id == R.id.nav_item_home) {
                     // Đã ở trang chủ
                 } else if (id == R.id.nav_item_search) {
+                    Log.d("SearchPageActivity", "Navigating to SearchActivity");
                     // Chuyển tới trang tìm kiếm
-//                    navigateToPage(SearchActivity.class);
+                    Intent SearchIntent = new Intent(HomePageActivity.this, SearchActivity.class);
+                    SearchIntent.putExtra(KEY_USERID, userId);
+                    startActivity(SearchIntent);
+                    Log.d("SearchPageActivity", "onCreate finished");
+                    finish();
+
                 } else if (id == R.id.nav_item_share) {
-                    // Chia sẻ nội dung
+                    Intent ShareIntent = new Intent(HomePageActivity.this, ShareActivity.class);
+                    ShareIntent.putExtra(KEY_USERID, userId);
+                    startActivity(ShareIntent);
+                    Log.d("ShareIntent", "onCreate finished");
+                    finish();
                 } else if (id == R.id.nav_item_likes) {
                     // Xem danh sách yêu thích
                 } else if (id == R.id.nav_item_profile) {
                     // Chuyển tới trang hồ sơ người dùng
+                    Log.d("UserProfileActivity", "Navigating to UserProfileActivity");
                     Intent userProfileIntent = new Intent(HomePageActivity.this, UserProfileActivity.class);
                     userProfileIntent.putExtra(KEY_USERID, userId);
                     startActivity(userProfileIntent);
@@ -72,26 +83,5 @@ public class HomePageActivity extends AppCompatActivity {
         Log.d("HomePageActivity", "onCreate finished");
     }
 
-    // Hàm chuyển tới trang nào đó (nếu đã mở thì reload)
-//    private void navigateToPage(Class<?> destinationActivity) {
-//        if (!isCurrentPage(destinationActivity)) {
-//            Intent intent = new Intent(HomePageActivity.this, destinationActivity);
-//            startActivity(intent);
-//        } else {
-//            reloadCurrentPage();
-//        }
-//    }
-//
-//    // Kiểm tra xem đã ở trang nào đó chưa
-//    private boolean isCurrentPage(Class<?> destinationActivity) {
-//        return currentActivityClass != null && currentActivityClass.equals(destinationActivity);
-//    }
-//
-//    // Tải lại trang hiện tại
-//    private void reloadCurrentPage() {
-//        Intent intent = new Intent(HomePageActivity.this, currentActivityClass);
-//        startActivity(intent);
-//        finish();
-//    }
 }
 

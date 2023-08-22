@@ -35,6 +35,7 @@ public class User {
     }
 
 
+
     public List<Post> getUserPosts() {
         return userPosts;
     }

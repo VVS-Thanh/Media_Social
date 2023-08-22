@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ShareActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/user"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true" />
+
+        <EditText
+            android:id="@+id/captionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imagePreview"
+            android:hint="Enter caption..." />
+
+        <Button
+            android:id="@+id/postButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/captionEditText"
+            android:layout_centerHorizontal="true"
+            android:text="Post" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/relLayout1"
             android:layout_marginBottom="50dp">
+
             <include layout="@layout/layout_center_viewpager"/>
+
+
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,5 +55,13 @@
 
 
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+
+
     </RelativeLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

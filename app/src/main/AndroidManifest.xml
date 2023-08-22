@@ -62,6 +62,22 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity
+            android:name=".SearchActivity"
+            android:label="Search user"
+            android:parentActivityName=".HomePageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePageActivity" />
+        </activity>
+        <activity
+            android:name=".ShareActivity"
+            android:label="Post Topic"
+            android:parentActivityName=".HomePageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePageActivity" />
+        </activity>
+        <activity
             android:name=".EditProfileActivity"
             android:label="Edit Profile"
             android:theme="@style/AppTheme.NoActionBar"

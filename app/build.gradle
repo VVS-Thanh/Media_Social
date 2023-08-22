@@ -34,8 +34,10 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'org.mindrot:jbcrypt:0.4'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 //    implementation 'pub.devrel:easypermissions:4.3.0'
 
 //    implementation group: 'com.github.jkwiecien', name: 'EasyImage', version: '3.2.0'

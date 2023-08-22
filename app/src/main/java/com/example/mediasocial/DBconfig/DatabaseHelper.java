@@ -16,9 +16,12 @@ import androidx.annotation.FloatRange;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.example.mediasocial.Models.Profile;
+import com.example.mediasocial.Models.User;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -330,6 +333,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userName;
     }
 
+
+    public List<User> getAllUsers() {
+        List<User> userList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {"user_id", "email", "phone", "name", "password", "role_id", "created_at"};
+
+        Cursor cursor = db.query("users", projection, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow("user_id"));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+            int roleId = cursor.getInt(cursor.getColumnIndexOrThrow("role_id"));
+            long createdAtMillis = cursor.getLong(cursor.getColumnIndexOrThrow("created_at"));
+
+            Date createdAt = new Date(createdAtMillis);
+
+            User user = new User(id, email, phone, name, password, createdAt, null, null, roleId);
+            userList.add(user);
+        }
+
+        cursor.close();
+        db.close();
+
+        return userList;
+    }
+
+
     //Insert Data Profiles
 
     //Lấy ra dữ liệu render
@@ -353,6 +386,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return profileId != -1;
     }
+
+
+
 
     // Lấy dữ liệu render
     @SuppressLint("Range")
@@ -504,7 +540,24 @@ public boolean updateProfileWithAvatar(int userId, String newUsername, String ne
         return avatarPath;
     }
 
+    //Post
 
+    public boolean insertPosting(int userId, String content, String imageurl) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+        values.put("content", content);
+        values.put("thumbnail_image", imageurl);// Leave empty for now
+        values.put("created_at", getCurrentDateTime());
+
+        long post_id = db.insert("posts", null, values);
+        db.close();
+        if (post_id == -1)
+            return false;
+        else {
+            return true;
+        }
+    }
 
 
 
