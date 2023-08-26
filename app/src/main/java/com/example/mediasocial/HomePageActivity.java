@@ -2,19 +2,45 @@ package com.example.mediasocial;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.mediasocial.DBconfig.DatabaseHelper;
+import com.example.mediasocial.Models.Like;
+import com.example.mediasocial.Models.Post;
 import com.example.mediasocial.Models.Profile;
+import com.example.mediasocial.Models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.text.ParseException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class HomePageActivity extends AppCompatActivity {
 
-    private TextView tvUsername;
+    private TextView tvUsername, tvOwnName, tvCaption, tvPostDay;
+    private ImageView imagePost, avatar;
     private DatabaseHelper db;
     private SharedPreferences sharedPreferences;
     private BottomNavigationView bottomNavigationView;
@@ -23,13 +49,15 @@ public class HomePageActivity extends AppCompatActivity {
     private int userId;
     private Profile userProfile;
     private Class<?> currentActivityClass;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_newsfeed_page);
-
-        tvUsername = findViewById(R.id.tvUsername);
+        avatar = findViewById(R.id.avatar);
+        tvOwnName = findViewById(R.id.tvOwnname);
+        recyclerView = findViewById(R.id.view_list_post);
         db = new DatabaseHelper(HomePageActivity.this);
 
         // Lấy userId từ SharedPreferences
@@ -37,11 +65,8 @@ public class HomePageActivity extends AppCompatActivity {
         userId = sharedPreferences.getInt(KEY_USERID, -1);
 
         // Hiển thị tên người dùng
-        String username = db.getUserName(userId);
-        if (username != null) {
-            tvUsername.setText(username);
-        }
-
+        showAccount();
+        renderpost();
         bottomNavigationView = findViewById(R.id.navigation);
 
         // Sự kiện khi chọn các mục trên Bottom Navigation View
@@ -82,6 +107,40 @@ public class HomePageActivity extends AppCompatActivity {
 
         Log.d("HomePageActivity", "onCreate finished");
     }
+    public void showAccount(){
+        String username = db.getUserName(userId);
+        tvOwnName.setText(username);
+        Log.d("user", username);
+        userProfile = db.getProfile(userId);
+        String avatarContentUri = userProfile.getAvatar();
+        Glide.with(this)
+                .load(avatarContentUri)
+                .error(R.drawable.user)
+                .into(avatar);
+//        Glide.with(this)
+//                .load(Uri.parse(userProfile.getAvatar()))
+//                .into(avatar);
+    }
+
+    public void renderpost(){
+        List<Post> posts= new ArrayList<>();
+        List<String> userlike = new ArrayList<>();
+        posts = db.getAllPosts();
+
+        Collections.sort(posts, new Comparator<Post>() {
+            @Override
+            public int compare(Post post1, Post post2) {
+                return post2.getCreatedAt().compareTo(post1.getCreatedAt());
+            }
+        });
+
+        PostAdapter adapter = new PostAdapter(posts,db);
+        Log.d("testadapter", String.valueOf(adapter));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+
 
 }
 

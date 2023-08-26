@@ -72,6 +72,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         userId = sharedPreferences.getInt(KEY_USERID, -1);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent userProfileIntent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
+                userProfileIntent.putExtra(KEY_USERID, userId);
+                startActivity(userProfileIntent);
+                finish();
+            }
+        });
 
 
         populateProfileInfo();
@@ -213,6 +222,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String formattedBirthday = sdf.format(profile.getBirthday());
                 tvBirthday.setText(formattedBirthday);
+                Glide.with(EditProfileActivity.this)
+                        .load(avatarPath)
+                        .into(profileImage);
             }
         }
     }

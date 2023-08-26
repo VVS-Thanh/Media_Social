@@ -7,24 +7,23 @@ import java.util.Locale;
 public class Post {
     private int postId;
     private String content;
-    private String topic;
-    private String thumbnailImage;
-    private Date createdAt;
-    private Date updatedAt;
-    private Date deletedAt;
-    private int userId;
 
-    public Post(int postId, String content, String topic, String thumbnailImage,
-                Date createdAt, Date updatedAt, Date deletedAt, int userId) {
+    public Post(int postId, String content, String thumbnailImage, Date createdAt, Date updatedAt, Date deletedAt, int userId) {
         this.postId = postId;
         this.content = content;
-        this.topic = topic;
         this.thumbnailImage = thumbnailImage;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.userId = userId;
     }
+
+    private String thumbnailImage;
+    private Date createdAt;
+    private Date updatedAt;
+    private Date deletedAt;
+    private int userId;
+
 
     public String getFormattedCreatedAt() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
@@ -47,13 +46,6 @@ public class Post {
         this.content = content;
     }
 
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
 
     public String getThumbnailImage() {
         return thumbnailImage;
@@ -97,7 +89,6 @@ public class Post {
 
     public String getPostInfo() {
         String info = "Post ID: " + postId + "\n"
-                + "Topic: " + topic + "\n"
                 + "Content: " + content + "\n"
                 + "Created At: " + getFormattedCreatedAt() + "\n"
                 + "Thumbnail Image: " + thumbnailImage + "\n"

@@ -7,14 +7,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.mediasocial.DBconfig.DatabaseHelper;
+import com.example.mediasocial.Models.Post;
 import com.example.mediasocial.Models.Profile;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -24,24 +32,30 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView tvUserName;
     private TextView tvStatus;
     private Button btnEditPfrofile;
+    private ImageView btnBack;
+    private ToggleButton toggleStatusButton;
     private CircleImageView profileImage;
     private DatabaseHelper db;
     private static final String PREF_NAME = "user_session";
     private static final String KEY_USERID = "userId";
     private SharedPreferences sharedPreferences;
 
-
+    private GridView mGridView;
+    //    private PostAdapter mPostAdapter;
+    private List<Post> mPostList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
 
+        mGridView = findViewById(R.id.gridView);
         tvName = findViewById(R.id.tvName);
         tvUserName = findViewById(R.id.tvUsername);
         tvStatus = findViewById(R.id.tvStatus);
         profileImage = findViewById(R.id.profileImage);
         btnEditPfrofile = findViewById(R.id.btnEditPfrofile);
-
+        btnBack = findViewById(R.id.btnBack);
+        toggleStatusButton = findViewById(R.id.toggleStatusButton);
         db = new DatabaseHelper(UserProfileActivity.this);
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -60,6 +74,30 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivity(userEditProfileIntent);
             }
         });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent HomeIntent = new Intent(UserProfileActivity.this, HomePageActivity.class);
+                HomeIntent.putExtra(KEY_USERID, userId);
+                startActivity(HomeIntent);
+                finish();
+            }
+        });
+        toggleStatusButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    int blueColor = ContextCompat.getColor(getApplicationContext(), R.color.blue);
+                    toggleStatusButton.setTextColor(blueColor);
+                    toggleStatusButton.setText("Active");
+                } else {
+                    int redColor = ContextCompat.getColor(getApplicationContext(), R.color.red);
+                    toggleStatusButton.setTextColor(redColor);
+                    toggleStatusButton.setText("Inactive");
+                }
+            }
+        });
+
     }
 
     private void displayUserProfile(int userId) {

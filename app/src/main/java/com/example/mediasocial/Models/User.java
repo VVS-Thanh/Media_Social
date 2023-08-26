@@ -46,7 +46,7 @@ public class User {
 
     public void addPost(int postId, String content, String topic, String thumbnailImage,
                         Date createdAt, Date updatedAt, Date deletedAt) {
-        Post post = new Post(postId, content, topic, thumbnailImage,
+        Post post = new Post(postId, content, thumbnailImage,
                 createdAt, updatedAt, deletedAt, getUserId());
         userPosts.add(post);
     }
@@ -56,7 +56,6 @@ public class User {
         for (Post post : userPosts) {
             if (post.getPostId() == postId) {
                 post.setContent(content);
-                post.setTopic(topic);
                 post.setThumbnailImage(thumbnailImage);
                 post.setUpdatedAt(updatedAt);
                 break;
