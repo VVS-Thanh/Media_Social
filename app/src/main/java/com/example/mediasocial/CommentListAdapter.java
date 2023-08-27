@@ -25,19 +25,58 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     private int layoutResource;
     private Context mContext;
     private List<Comment> commentList;
+    private int postId;
 
-    public CommentListAdapter(List<Comment> commentList) {
-        this.commentList = commentList;
+    public CommentListAdapter(int postId) {
+        this.postId = postId;
     }
-    public CommentListAdapter(Context context){
+
+    public CommentListAdapter(List<Comment> commentList, Context context) {
+        this.commentList = commentList;
         this.mContext = context;
     }
-
-
     /**
      * Returns a string representing the number of days ago the post was made
      * @return
      */
+
+
+    @NonNull
+    @Override
+    public CommentListAdapter.CommentListViewer onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_comment, parent, false);
+        return new CommentListViewer(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CommentListAdapter.CommentListViewer holder, int position) {
+        Comment comment = commentList.get(position);
+////        int post_id = getArguments().getInt("comment_post_id");
+//        int id = comment.getPostId();
+//        String name = db.getUserNameFromComment(postId);
+//        holder.tvUsername.setText(name);
+        holder.tvContent.setText(comment.getContent());
+        holder.tvPostDay.setText(getTimestampDifference(comment));
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return commentList.size();
+    }
+    public static class CommentListViewer extends RecyclerView.ViewHolder {
+        private TextView tvUsername, tvContent, tvPostDay, tvLike;
+
+        public CommentListViewer(@NonNull View itemView) {
+            super(itemView);
+            tvUsername = itemView.findViewById(R.id.comment_username);
+            tvContent = itemView.findViewById(R.id.comment);
+            tvPostDay = itemView.findViewById(R.id.comment_time_posted);
+//            tvLike = itemView.findViewById(R.id.comment_like);
+
+        }
+
+    }
     private String getTimestampDifference(Comment comment){
         Date currentDate = new Date();
         Date creationDate = comment.getCreatedAt();
@@ -73,39 +112,5 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 return seconds + " seconds ago";
             }
         }
-    }
-
-
-    @NonNull
-    @Override
-    public CommentListAdapter.CommentListViewer onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_comment, parent, false);
-        return new CommentListViewer(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull CommentListAdapter.CommentListViewer holder, int position) {
-        Comment comment = commentList.get(position);
-        holder.tvContent.setText(comment.getContent());
-        holder.tvPostDay.setText(getTimestampDifference(comment));
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
-    public static class CommentListViewer extends RecyclerView.ViewHolder {
-        private TextView tvUsername, tvContent, tvPostDay, tvLike;
-
-        public CommentListViewer(@NonNull View itemView) {
-            super(itemView);
-            tvUsername = itemView.findViewById(R.id.comment_username);
-            tvContent = itemView.findViewById(R.id.comment);
-            tvPostDay = itemView.findViewById(R.id.comment_time_posted);
-            tvLike = itemView.findViewById(R.id.comment_like);
-
-        }
-
     }
 }

@@ -2,6 +2,7 @@ package com.example.mediasocial;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,9 +102,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Post post = postList.get(position);
-                        Intent intent = new Intent(view.getContext(), ViewCommentFragment.class);
-                        intent.putExtra("post_id", post.getPostId());
-                        view.getContext().startActivity(intent);
+                        Fragment fragment = new ViewCommentFragment();
+                        Bundle args = new Bundle();
+                        args.putInt("post_id", post.getPostId());
+                        Log.d("test args", args.toString());
+                        fragment.setArguments(args);
+                        FragmentManager fragmentManager = ((AppCompatActivity) itemView.getContext()).getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.container, fragment);
+                        itemView.setVisibility(view.GONE);
+                        fragmentTransaction.commit();
                     }
                 }
             });
@@ -111,6 +121,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Post post = postList.get(position);
+
+                    }
+                }
+            });
+
+            viewcomment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Post post = postList.get(position);
+                        Fragment fragment = new ViewCommentFragment();
+                        Bundle args = new Bundle();
+                        args.putInt("comment_post_id", post.getPostId());
+                        Log.d("test args", args.toString());
+                        fragment.setArguments(args);
+                        FragmentManager fragmentManager = ((AppCompatActivity) itemView.getContext()).getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        itemView.setVisibility(view.GONE);
+                        fragmentTransaction.replace(R.id.container, fragment);
+                        fragmentTransaction.commit();
+
 
                     }
                 }

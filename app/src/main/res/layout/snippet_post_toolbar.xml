@@ -20,7 +20,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_centerVertical="true"
-                    android:id="@+id/backArrow"
+                    android:id="@+id/btnBack"
                     android:src="@drawable/ic_arrow_back"/>
 
 
@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:textSize="20sp"
-                    android:layout_toRightOf="@+id/backArrow"
+                    android:layout_toRightOf="@+id/btnBack"
                     android:layout_marginLeft="30dp"
                     android:text="Photo"
                     android:textColor="@color/black"

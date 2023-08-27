@@ -37,6 +37,7 @@ public class ShareActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> cameraLauncher;
     private ActivityResultLauncher<Intent> galleryLauncher;
     private ImageView imagePreview;
+    private ImageView btnBack;
     private EditText captionEditText;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     String newAvatarPath = null;
@@ -60,6 +61,7 @@ public class ShareActivity extends AppCompatActivity {
         imagePreview = findViewById(R.id.imagePreview);
         captionEditText = findViewById(R.id.captionEditText);
         postButton = findViewById(R.id.postButton);
+        btnBack = findViewById(R.id.btnBack);
         db = new DatabaseHelper(ShareActivity.this);
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         userId = sharedPreferences.getInt(KEY_USERID, -1);
@@ -91,6 +93,15 @@ public class ShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 post();
 
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ShareActivity.this, HomePageActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

@@ -4,10 +4,19 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ShareActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/content_post_item">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/top_navigate">
+            <include layout="@layout/snippet_post_toolbar"/>
+        </RelativeLayout>
         <ImageView
+            android:layout_below="@+id/top_navigate"
             android:id="@+id/imagePreview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

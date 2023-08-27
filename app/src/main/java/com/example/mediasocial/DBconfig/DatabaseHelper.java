@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.icu.text.SimpleDateFormat;
 
+import com.example.mediasocial.Models.Comment;
 import com.example.mediasocial.Models.Post;
 import com.example.mediasocial.Models.Profile;
 import com.example.mediasocial.Models.User;
@@ -20,6 +21,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.text.ParseException;
 //import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -658,10 +661,9 @@ public Date convertStringToDate(String s){
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     try {
         return dateFormat.parse(s);
-        // Bây giờ bạn có đối tượng Date 'createdAt' với ngày và thời gian đã phân tích
     } catch (ParseException e) {
         e.printStackTrace();
-        return null; // Xử lý lỗi phân tích nếu cần
+        return null;
     }
 }
     public boolean insertComment( String content, int postId) {
@@ -760,6 +762,69 @@ public Date convertStringToDate(String s){
             db.close();
         }
     }
+
+
+    @SuppressLint("Range")
+    public List<Comment> getCommentOfPost(int postId) {
+        List<Comment> commentList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                "comment_id",
+                "content",
+                "created_at",
+                "updated_at",
+                "post_id"
+        };
+        String query = "SELECT * FROM comment";
+        String selection = "post_id = ?";
+        String[] selectionArgs = {String.valueOf(postId)};
+
+        Cursor cursor = db.query("comments",columns, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int comment_id = cursor.getInt(cursor.getColumnIndex("comment_id"));
+                int post_id = cursor.getInt(cursor.getColumnIndex("post_id"));
+                String content = cursor.getString(cursor.getColumnIndex("content"));
+                String createdAtMillis = cursor.getString(cursor.getColumnIndex("created_at"));
+//                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                Date createdAt = convertStringToDate(createdAtMillis);
+                Comment comment = new Comment(comment_id, content, createdAt , null,null,post_id);
+                commentList.add(comment);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        Collections.sort(commentList, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment c1, Comment c2) {
+                return c2.getCreatedAt().compareTo(c1.getCreatedAt());
+            }
+        });
+        return commentList;
+    }
+
+    @SuppressLint("Range")
+    public String getUserNameFromComment(int postUserID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String userName = null;
+
+        String query = "SELECT users.name FROM posts INNER JOIN users ON posts.user_id = users.user_id INNER JOIN comments ON comments.post_id = posts.post_id WHERE posts.user_id = ?";
+        String[] selectionArgs = {String.valueOf(postUserID)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            userName = cursor.getString(cursor.getColumnIndex("name"));
+            cursor.close();
+        }
+
+        db.close();
+        return userName;
+    }
+
 }
 
 
