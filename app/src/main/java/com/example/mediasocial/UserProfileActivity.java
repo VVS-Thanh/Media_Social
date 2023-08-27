@@ -32,7 +32,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView tvUserName;
     private TextView tvStatus;
     private Button btnEditPfrofile;
-    private ImageView btnBack;
+    private ImageView btnBack, btnMenu;
     private ToggleButton toggleStatusButton;
     private CircleImageView profileImage;
     private DatabaseHelper db;
@@ -54,6 +54,7 @@ public class UserProfileActivity extends AppCompatActivity {
         tvStatus = findViewById(R.id.tvStatus);
         profileImage = findViewById(R.id.profileImage);
         btnEditPfrofile = findViewById(R.id.btnEditPfrofile);
+        btnMenu = findViewById(R.id.btnMenu);
         btnBack = findViewById(R.id.btnBack);
         toggleStatusButton = findViewById(R.id.toggleStatusButton);
         db = new DatabaseHelper(UserProfileActivity.this);
@@ -74,6 +75,18 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivity(userEditProfileIntent);
             }
         });
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("ManagerPost", "On strart");
+                Intent PostIntent = new Intent(UserProfileActivity.this, PostOfUserActivity.class);
+                PostIntent.putExtra(KEY_USERID, userId);
+                startActivity(PostIntent);
+                finish();
+            }
+        });
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,18 +96,17 @@ public class UserProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+        boolean savedStatus = sharedPreferences.getBoolean("status", false);
+        updateToggleButtonStatus(savedStatus);
+
         toggleStatusButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    int blueColor = ContextCompat.getColor(getApplicationContext(), R.color.blue);
-                    toggleStatusButton.setTextColor(blueColor);
-                    toggleStatusButton.setText("Active");
-                } else {
-                    int redColor = ContextCompat.getColor(getApplicationContext(), R.color.red);
-                    toggleStatusButton.setTextColor(redColor);
-                    toggleStatusButton.setText("Inactive");
-                }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("status", isChecked);
+                editor.apply();
+
+                updateToggleButtonStatus(isChecked);
             }
         });
 
@@ -123,6 +135,18 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         } else {
             Log.e("UserProfileActivity", "User Profile is null");
+        }
+    }
+
+    private void updateToggleButtonStatus(boolean isChecked) {
+        if (isChecked) {
+            int blueColor = ContextCompat.getColor(getApplicationContext(), R.color.blue);
+            toggleStatusButton.setTextColor(blueColor);
+            toggleStatusButton.setText("Active");
+        } else {
+            int redColor = ContextCompat.getColor(getApplicationContext(), R.color.red);
+            toggleStatusButton.setTextColor(redColor);
+            toggleStatusButton.setText("Inactive");
         }
     }
 

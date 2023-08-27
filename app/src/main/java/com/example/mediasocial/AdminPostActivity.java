@@ -52,7 +52,7 @@ public class AdminPostActivity extends AppCompatActivity {
 
     private void showOptionsDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Action")
+        builder.setTitle("Sửa quyền")
                 .setItems(new CharSequence[]{"Edit Role", "Delete User"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -63,7 +63,7 @@ public class AdminPostActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", null);
+                .setNegativeButton("Huỷ bỏ", null);
 
         builder.create().show();
     }
@@ -71,7 +71,7 @@ public class AdminPostActivity extends AppCompatActivity {
     private void showEditRoleDialog(final int position) {
         final User user = userList.get(position);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit Role")
+        builder.setTitle("Sửa quyền")
                 .setSingleChoiceItems(new CharSequence[]{"Admin", "User"}, user.getRoleId() - 1,
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -85,16 +85,16 @@ public class AdminPostActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         })
-                .setNegativeButton("Cancel", null);
+                .setNegativeButton("Huỷ bỏ", null);
 
         builder.create().show();
     }
 
     private void showDeleteConfirmationDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Delete")
-                .setMessage("Are you sure you want to delete this user?")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        builder.setTitle("Xoá user")
+                .setMessage("Bạn muốn xoá user này không?")
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         boolean deleted = db.deleteUser(userList.get(position).getUserId());
@@ -104,7 +104,7 @@ public class AdminPostActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", null);
+                .setNegativeButton("Huỷ bỏ", null);
 
         builder.create().show();
     }

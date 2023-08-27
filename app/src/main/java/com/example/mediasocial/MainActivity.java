@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signpage);
         DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+//        db.deletePost(9);
 //        db.createDatabase();
 //
 //        Role.insertRolesData(MainActivity.this);

@@ -75,6 +75,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity
+            android:name=".PostOfUserActivity"
+            android:label="Manager Post"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
             android:name=".SearchActivity"
             android:label="Search user"
             android:parentActivityName=".HomePageActivity">

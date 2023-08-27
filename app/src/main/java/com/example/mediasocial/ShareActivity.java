@@ -78,7 +78,7 @@ public class ShareActivity extends AppCompatActivity {
                     Log.d("imagepath", result.getData().getData().toString());
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         selectedImageUri = result.getData().getData();
-                        newAvatarPath = selectedImageUri.toString(); // Lưu đường dẫn hình ảnh mới
+                        newAvatarPath = selectedImageUri.toString();
                         Log.d("imagepath", newAvatarPath);
                         Glide.with(ShareActivity.this)
                                 .load(selectedImageUri)

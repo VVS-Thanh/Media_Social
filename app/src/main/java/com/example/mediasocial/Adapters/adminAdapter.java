@@ -82,7 +82,7 @@ public class adminAdapter extends BaseAdapter {
     private void showEditRoleDialog(final int position) {
         final User user = userList.get(position);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Edit Role")
+        builder.setTitle("Chỉnh sửa quyền")
                 .setSingleChoiceItems(new CharSequence[]{"Admin", "User"}, user.getRoleId() - 1,
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -96,16 +96,16 @@ public class adminAdapter extends BaseAdapter {
                                 dialog.dismiss();
                             }
                         })
-                .setNegativeButton("Cancel", null);
+                .setNegativeButton("Huỷ bỏ", null);
 
         builder.create().show();
     }
 
     private void showDeleteConfirmationDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Confirm Delete")
-                .setMessage("Are you sure you want to delete this user?")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        builder.setTitle("Xoá user")
+                .setMessage("Bạn muốn xoá user này không?")
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int userIdToDelete = userList.get(position).getUserId();
@@ -117,7 +117,7 @@ public class adminAdapter extends BaseAdapter {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", null);
+                .setNegativeButton("Huỷ bỏ", null);
 
         builder.create().show();
     }

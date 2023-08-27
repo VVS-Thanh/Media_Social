@@ -42,8 +42,8 @@ public class HomePageActivity extends AppCompatActivity {
     private TextView tvUsername, tvOwnName, tvCaption, tvPostDay;
     private ImageView imagePost, avatar;
     private DatabaseHelper db;
-    private SharedPreferences sharedPreferences;
     private BottomNavigationView bottomNavigationView;
+    private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "user_session";
     private static final String KEY_USERID = "userId";
     private int userId;

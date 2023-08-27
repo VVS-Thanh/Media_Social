@@ -551,7 +551,7 @@ public boolean updateProfileWithAvatar(int userId, String newUsername, String ne
         ContentValues values = new ContentValues();
         values.put("user_id", userId);
         values.put("content", content);
-        values.put("thumbnail_image", imageurl);// Leave empty for now
+        values.put("thumbnail_image", imageurl);
         values.put("created_at", getCurrentDateTime());
 
         long post_id = db.insert("posts", null, values);
@@ -684,7 +684,7 @@ public Date convertStringToDate(String s){
     public List<Post> getAllPostsByUserId(int userId) {
         List<Post> postList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] projection = {"post_id", "content", "thumbnail_image", "created_at"};
+        String[] projection = {"post_id", "content"};
 
         String selection = "user_id = ?";
         String[] selectionArgs = {String.valueOf(userId)};
@@ -694,12 +694,7 @@ public Date convertStringToDate(String s){
         while (cursor.moveToNext()) {
             int postId = cursor.getInt(cursor.getColumnIndexOrThrow("post_id"));
             String content = cursor.getString(cursor.getColumnIndexOrThrow("content"));
-            String thumbnailImage = cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_image"));
-            long createdAtMillis = cursor.getLong(cursor.getColumnIndexOrThrow("created_at"));
-
-            Date createdAt = new Date(createdAtMillis);
-
-            Post post = new Post(postId, content, thumbnailImage, createdAt, null, null, userId);
+            Post post = new Post(postId, content, null, null, null, null, userId);
             postList.add(post);
         }
 
@@ -708,6 +703,8 @@ public Date convertStringToDate(String s){
 
         return postList;
     }
+
+
 
 
     public boolean updateUserRoleWithRoleId(int roleId, int userId) {

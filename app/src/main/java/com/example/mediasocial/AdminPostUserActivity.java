@@ -58,8 +58,8 @@ public class AdminPostUserActivity extends AppCompatActivity implements AdminPos
     private void showDeleteConfirmationDialog(final Post post) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Delete")
-                .setMessage("Are you sure you want to delete this post?")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                .setMessage("Bạn muốn xoá bài viết này không?")
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         db.deletePost(post.getPostId());
@@ -67,7 +67,7 @@ public class AdminPostUserActivity extends AppCompatActivity implements AdminPos
                         adminPostAdapter.notifyDataSetChanged();
                     }
                 })
-                .setNegativeButton("Cancel", null);
+                .setNegativeButton("Huỷ bỏ", null);
 
         builder.create().show();
     }
