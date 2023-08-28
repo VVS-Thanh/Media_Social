@@ -105,6 +105,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         Fragment fragment = new ViewCommentFragment();
                         Bundle args = new Bundle();
                         args.putInt("post_id", post.getPostId());
+                        args.putInt("comment_post_id", post.getPostId());
                         Log.d("test args", args.toString());
                         fragment.setArguments(args);
                         FragmentManager fragmentManager = ((AppCompatActivity) itemView.getContext()).getSupportFragmentManager();
@@ -135,6 +136,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         Fragment fragment = new ViewCommentFragment();
                         Bundle args = new Bundle();
                         args.putInt("comment_post_id", post.getPostId());
+                        args.putInt("post_id", post.getPostId());
                         Log.d("test args", args.toString());
                         fragment.setArguments(args);
                         FragmentManager fragmentManager = ((AppCompatActivity) itemView.getContext()).getSupportFragmentManager();

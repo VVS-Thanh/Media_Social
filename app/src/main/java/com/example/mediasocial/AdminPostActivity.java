@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mediasocial.Adapters.adminAdapter;
 import com.example.mediasocial.DBconfig.DatabaseHelper;
@@ -21,6 +24,7 @@ public class AdminPostActivity extends AppCompatActivity {
     private List<User> userList;
     private ListView userListView;
     private adminAdapter adapter;
+    private ImageButton btnLogout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,7 @@ public class AdminPostActivity extends AppCompatActivity {
         btnManagePosts = findViewById(R.id.btnManagePosts);
         btnManageUsers = findViewById(R.id.btnManageUsers);
         userListView = findViewById(R.id.userListView);
+        btnLogout =findViewById(R.id.btnLogout);
         adapter = new adminAdapter(this, userList, db);
         userListView.setAdapter(adapter);
 
@@ -46,6 +51,16 @@ public class AdminPostActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(AdminPostActivity.this, AdminPostUserActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AdminPostActivity.this, "Đăng xuất thành công.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AdminPostActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

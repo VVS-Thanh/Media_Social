@@ -33,7 +33,7 @@
         android:id="@+id/textViewAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ID bài viết"
+        android:text="Người tạo"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/black"

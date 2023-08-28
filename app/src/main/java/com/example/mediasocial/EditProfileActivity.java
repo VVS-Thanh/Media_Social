@@ -224,6 +224,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 tvBirthday.setText(formattedBirthday);
                 Glide.with(EditProfileActivity.this)
                         .load(avatarPath)
+                        .error(R.drawable.user)
                         .into(profileImage);
             }
         }

@@ -377,8 +377,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         values.put("user_id", userId);
-        values.put("first_name", ""); // Leave empty for now
-        values.put("last_name", "");  // Leave empty for now
+        values.put("first_name", "");
+        values.put("last_name", "");
         values.put("user_name", "profile" + userId);  // Leave empty for now
         String formattedCurrentDate = sdf.format(new Date());
         values.put("birthday", formattedCurrentDate);

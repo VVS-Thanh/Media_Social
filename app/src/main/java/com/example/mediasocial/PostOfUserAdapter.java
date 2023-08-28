@@ -1,4 +1,4 @@
-package com.example.mediasocial;// ... (same imports as before)
+package com.example.mediasocial;
 
 import android.content.Context;
 import android.content.DialogInterface;
