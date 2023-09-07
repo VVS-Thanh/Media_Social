@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/postImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:id="@+id/contentTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/postImageView"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:padding="8dp"/>
+
+    <TextView
+        android:id="@+id/createdAtTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contentTextView"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"
+        android:padding="8dp"/>
+
+    <!-- Các thông tin chi tiết khác của bài post có thể được thêm vào ở đây -->
+
+</RelativeLayout>

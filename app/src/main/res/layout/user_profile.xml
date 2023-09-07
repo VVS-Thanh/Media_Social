@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_height="match_parent">
+
 
     <RelativeLayout
         android:id="@+id/relLayout1"
@@ -20,6 +21,12 @@
             android:paddingTop="8dp"
             android:paddingEnd="16dp"
             android:paddingBottom="8dp">
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:id="@+id/tvName"
@@ -39,12 +46,14 @@
 
 
             <ImageView
+                android:id = "@+id/btnMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_menu" />
 
         </LinearLayout>
+
 
 
     </RelativeLayout>
@@ -78,7 +87,7 @@
                     app:civ_border_width="1dp" />
 
                 <ImageButton
-                    android:id="@+id/edit_profileImage"
+                    android:id="@+id/btnImage"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:layout_alignEnd="@id/profileImage"
@@ -99,7 +108,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/nameTv"
+                    android:id="@+id/tvUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
@@ -110,7 +119,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/statusTV"
+                    android:id="@+id/tvStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="3"
@@ -146,77 +155,27 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/followingCountTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:text="0"
-                    android:textAlignment="center"
+                    android:id="@+id/statusTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profileImage"
+                    android:layout_marginStart="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="Trạng thái: "
                     android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:text="following"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/followersCountTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:text="followers"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/postCountTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:text="posts"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                <ToggleButton
+                    android:id="@+id/toggleStatusButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/statusTextView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/blue"
+                    android:textOff="Inactive"
+                    android:textOn="Active"
+                    android:checked="true" />
 
             </LinearLayout>
 
@@ -228,32 +187,45 @@
             android:layout_below="@id/countLayout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="17dp"
+            android:layout_marginBottom="17dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
-
             <Button
-                android:id="@+id/followBtn1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:id="@+id/btnEditPfrofile"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:background="@drawable/button_follow"
                 android:minWidth="160dp"
-                android:text="Kết bạn"
-                android:textColor="@android:color/white"
+                android:text="Chỉnh sửa thông tin trang cá nhân"
+                android:textColor="@android:color/black"
                 app:backgroundTint="@null"
                 />
 
-            <Button
-                android:id="@+id/followBtn2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:background="@drawable/button_follow"
-                android:minWidth="160dp"
-                android:text="Theo dõi"
-                android:textColor="@android:color/white"
-                app:backgroundTint="@null"
-                />
+<!--            <Button-->
+<!--                android:id="@+id/followBtn1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:background="@drawable/button_follow"-->
+<!--                android:minWidth="160dp"-->
+<!--                android:text="Kết bạn"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                app:backgroundTint="@null"-->
+<!--                />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/followBtn2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:background="@drawable/button_follow"-->
+<!--                android:minWidth="160dp"-->
+<!--                android:text="Theo dõi"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                app:backgroundTint="@null"-->
+<!--                />-->
 
         </LinearLayout>
 
@@ -278,7 +250,6 @@
             android:verticalSpacing="1dp">
 
         </GridView>
-
 
     </RelativeLayout>
 

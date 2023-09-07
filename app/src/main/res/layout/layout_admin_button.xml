@@ -1,0 +1,27 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <ImageButton
+        android:id = "@+id/btnLogout"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="320dp"
+        android:src="@drawable/ic_logout"
+        />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quản lý người dùng"
+        android:id="@+id/btnManageUsers" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quản lý bài viết"
+        android:id="@+id/btnManagePosts" />
+
+</LinearLayout>

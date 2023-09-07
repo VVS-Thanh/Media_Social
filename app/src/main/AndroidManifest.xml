@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.apps.photos.permission.GOOGLE_PHOTOS_PROVIDER" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,6 +23,86 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:label="Sign Up"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".LogInActivity"
+            android:label="Log In"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".HomePageActivity"
+            android:label="Home Page"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".LogInActivity">
+<!--            <meta-data-->
+<!--                android:name="android.support.PARENT_ACTIVITY"-->
+<!--                android:value=".LogInActivity" />-->
+        </activity>
+        <activity
+            android:name=".AdminPostActivity"
+            android:label="Admin Page"
+            android:parentActivityName=".LogInActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LogInActivity" />
+        </activity>
+        <activity
+            android:name=".AdminPostActivity"
+            android:label="Admin Page"
+            android:parentActivityName=".LogInActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LogInActivity" />
+        </activity>
+
+        <activity
+            android:name=".AdminPostUserActivity"
+            android:label="Admin Post"/>
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="User Profile"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".PostOfUserActivity"
+            android:label="Manager Post"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".SearchActivity"
+            android:label="Search user"
+            android:parentActivityName=".HomePageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePageActivity" />
+        </activity>
+        <activity
+            android:name=".ShareActivity"
+            android:label="Post Topic"
+            android:parentActivityName=".HomePageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomePageActivity" />
+        </activity>
+        <activity
+            android:name=".EditProfileActivity"
+            android:label="Edit Profile"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".UserProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UserProfileActivity" />
         </activity>
         <meta-data
             android:name="preloaded_fonts"
