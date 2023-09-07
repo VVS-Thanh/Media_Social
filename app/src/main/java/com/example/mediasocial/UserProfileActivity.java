@@ -7,22 +7,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+//import com.example.mediasocial.Adapters.PostAdapter;
 import com.example.mediasocial.DBconfig.DatabaseHelper;
 import com.example.mediasocial.Models.Post;
 import com.example.mediasocial.Models.Profile;
+import com.example.mediasocial.Models.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -32,60 +32,47 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView tvUserName;
     private TextView tvStatus;
     private Button btnEditPfrofile;
-    private ImageView btnBack, btnMenu;
-    private ToggleButton toggleStatusButton;
     private CircleImageView profileImage;
+    private ImageView btnBack;
     private DatabaseHelper db;
     private static final String PREF_NAME = "user_session";
     private static final String KEY_USERID = "userId";
     private SharedPreferences sharedPreferences;
 
     private GridView mGridView;
-    //    private PostAdapter mPostAdapter;
+//    private PostAdapter mPostAdapter;
     private List<Post> mPostList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-
         mGridView = findViewById(R.id.gridView);
+//        PostAdapter PostAdapter = new PostAdapter(this);
         tvName = findViewById(R.id.tvName);
         tvUserName = findViewById(R.id.tvUsername);
         tvStatus = findViewById(R.id.tvStatus);
         profileImage = findViewById(R.id.profileImage);
         btnEditPfrofile = findViewById(R.id.btnEditPfrofile);
-        btnMenu = findViewById(R.id.btnMenu);
         btnBack = findViewById(R.id.btnBack);
-        toggleStatusButton = findViewById(R.id.toggleStatusButton);
+
         db = new DatabaseHelper(UserProfileActivity.this);
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         int userId = sharedPreferences.getInt(KEY_USERID, -1);
+//
+//        mPostAdapter = new PostAdapter(this);
+
+
+        mPostList = db.getAllPostsByUserId(userId);
+
+//        mPostAdapter.setPostList(mPostList);
+//        mGridView.setAdapter(mPostAdapter); //
 
         Log.d("UserProfile", "UserID_PRofile: " + userId);
 
         displayUserProfile(userId);
-
-
-        btnEditPfrofile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent userEditProfileIntent = new Intent( UserProfileActivity.this, EditProfileActivity.class);
-                userEditProfileIntent.putExtra(KEY_USERID, userId);
-                startActivity(userEditProfileIntent);
-            }
-        });
-
-        btnMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("ManagerPost", "On strart");
-                Intent PostIntent = new Intent(UserProfileActivity.this, PostOfUserActivity.class);
-                PostIntent.putExtra(KEY_USERID, userId);
-                startActivity(PostIntent);
-                finish();
-            }
-        });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,20 +83,16 @@ public class UserProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
-        boolean savedStatus = sharedPreferences.getBoolean("status", false);
-        updateToggleButtonStatus(savedStatus);
 
-        toggleStatusButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        btnEditPfrofile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("status", isChecked);
-                editor.apply();
-
-                updateToggleButtonStatus(isChecked);
+            public void onClick(View v) {
+                Intent userEditProfileIntent = new Intent( UserProfileActivity.this, EditProfileActivity.class);
+                userEditProfileIntent.putExtra(KEY_USERID, userId);
+                startActivity(userEditProfileIntent);
             }
         });
-
     }
 
     private void displayUserProfile(int userId) {
@@ -135,18 +118,6 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         } else {
             Log.e("UserProfileActivity", "User Profile is null");
-        }
-    }
-
-    private void updateToggleButtonStatus(boolean isChecked) {
-        if (isChecked) {
-            int blueColor = ContextCompat.getColor(getApplicationContext(), R.color.blue);
-            toggleStatusButton.setTextColor(blueColor);
-            toggleStatusButton.setText("Active");
-        } else {
-            int redColor = ContextCompat.getColor(getApplicationContext(), R.color.red);
-            toggleStatusButton.setTextColor(redColor);
-            toggleStatusButton.setText("Inactive");
         }
     }
 

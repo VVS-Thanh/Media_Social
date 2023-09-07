@@ -37,7 +37,10 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = edtEmail.getText().toString();
                 String password = edtPassword.getText().toString();
-                if (checkLogin(email, password)) {
+
+
+
+                    if (checkLogin(email, password)) {
                     int userId = db.getUserId(email);
                     int roleId = db.getUserRoleId(userId);
                     if (roleId == 1) {
@@ -46,21 +49,22 @@ public class LogInActivity extends AppCompatActivity {
                         finish();
                     }
                     else {
-                        if (!db.isProfileExists(userId)) {
-                            boolean isInserted = db.insertProfile(userId);
-                            if (isInserted) {
-                                Log.d("LogInActivity", "Đã thêm thành công profile cho userID: " + userId);
-                            } else {
-                                Log.e("LogInActivity", "Profile đã tồn tại: " + userId);
-                            }
+                    if (!db.isProfileExists(userId)) {
+                        boolean isInserted = db.insertProfile(userId);
+                        if (isInserted) {
+                            Log.d("LogInActivity", "Đã thêm thành công profile cho userID: " + userId);
+                        } else {
+                            Log.e("LogInActivity", "Profile đã tồn tại: " + userId);
                         }
                     }
+
                     saveSession(email, userId);
 
                     // Chuyển hướng tới HomePageActivity
                     Intent homePageIntent = new Intent(LogInActivity.this, HomePageActivity.class);
                     startActivity(homePageIntent);
                     finish();
+                    }
                 } else {
                     Toast.makeText(LogInActivity.this, "Đăng nhập thất bai! Vui lòng kiểm tra lại thông tin.", Toast.LENGTH_SHORT).show();
                     edtPassword.setText("");

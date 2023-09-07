@@ -49,14 +49,14 @@
 <!--                android:name="android.support.PARENT_ACTIVITY"-->
 <!--                android:value=".LogInActivity" />-->
         </activity>
-<!--        <activity-->
-<!--            android:name=".AdminPostActivity"-->
-<!--            android:label="Admin Page"-->
-<!--            android:parentActivityName=".LogInActivity">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.PARENT_ACTIVITY"-->
-<!--                android:value=".LogInActivity" />-->
-<!--        </activity>-->
+        <activity
+            android:name=".AdminPostActivity"
+            android:label="Admin Page"
+            android:parentActivityName=".LogInActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LogInActivity" />
+        </activity>
         <activity
             android:name=".AdminPostActivity"
             android:label="Admin Page"

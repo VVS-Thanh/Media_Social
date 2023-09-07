@@ -6,3 +6,4 @@
     android:scaleType="centerCrop"
     android:adjustViewBounds="true"
     android:layout_margin="8dp"/>
+

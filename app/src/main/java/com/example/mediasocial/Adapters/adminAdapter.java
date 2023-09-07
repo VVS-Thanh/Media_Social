@@ -19,6 +19,7 @@ import com.example.mediasocial.R;
 import java.util.List;
 
 public class adminAdapter extends BaseAdapter {
+
     private Context context;
     private List<User> userList;
     private DatabaseHelper db;
@@ -82,7 +83,7 @@ public class adminAdapter extends BaseAdapter {
     private void showEditRoleDialog(final int position) {
         final User user = userList.get(position);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Chỉnh sửa quyền")
+        builder.setTitle("Edit Role")
                 .setSingleChoiceItems(new CharSequence[]{"Admin", "User"}, user.getRoleId() - 1,
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -96,16 +97,16 @@ public class adminAdapter extends BaseAdapter {
                                 dialog.dismiss();
                             }
                         })
-                .setNegativeButton("Huỷ bỏ", null);
+                .setNegativeButton("Cancel", null);
 
         builder.create().show();
     }
 
     private void showDeleteConfirmationDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Xoá user")
-                .setMessage("Bạn muốn xoá user này không?")
-                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+        builder.setTitle("Confirm Delete")
+                .setMessage("Are you sure you want to delete this user?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int userIdToDelete = userList.get(position).getUserId();
@@ -117,9 +118,11 @@ public class adminAdapter extends BaseAdapter {
                         }
                     }
                 })
-                .setNegativeButton("Huỷ bỏ", null);
+                .setNegativeButton("Cancel", null);
 
         builder.create().show();
     }
+
+
 
 }

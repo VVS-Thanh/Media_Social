@@ -7,8 +7,14 @@ import java.util.Locale;
 public class Post {
     private int postId;
     private String content;
+    private String thumbnailImage;
+    private Date createdAt;
+    private Date updatedAt;
+    private Date deletedAt;
+    private int userId;
 
-    public Post(int postId, String content, String thumbnailImage, Date createdAt, Date updatedAt, Date deletedAt, int userId) {
+    public Post(int postId, String content, String thumbnailImage,
+                Date createdAt, Date updatedAt, Date deletedAt, int userId) {
         this.postId = postId;
         this.content = content;
         this.thumbnailImage = thumbnailImage;
@@ -17,13 +23,6 @@ public class Post {
         this.deletedAt = deletedAt;
         this.userId = userId;
     }
-
-    private String thumbnailImage;
-    private Date createdAt;
-    private Date updatedAt;
-    private Date deletedAt;
-    private int userId;
-
 
     public String getFormattedCreatedAt() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
@@ -45,7 +44,6 @@ public class Post {
     public void setContent(String content) {
         this.content = content;
     }
-
 
     public String getThumbnailImage() {
         return thumbnailImage;

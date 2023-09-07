@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
 //
 //        Role.insertRolesData(MainActivity.this);
 //
-//        String adminEmail = "admin@gmail.com";
-//        String adminPhone = "123456789";
-//        String adminName = "admin";
+//        String adminEmail = "Thanhadmin@gmail.com";
+//        String adminPhone = "123456739";
+//        String adminName = "admin1";
 //        String adminPassword = "123123123";
 //        int adminRoleId = 1;
 //        long adminUserId = db.insertUserAdmin(adminEmail, adminPhone, adminName, adminPassword, adminRoleId);
